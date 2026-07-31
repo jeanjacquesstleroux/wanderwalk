@@ -1,4 +1,4 @@
-# Differential Geometry Curriculum — Master Checklist
+# Differential Geometry Curriculum -- Master Checklist
 ### For: Brownian Motion on Manifolds Project
 ### Audience: Freshman with calculus, linear algebra, probability
 ### Structure: Five papers in dependency order
@@ -10,7 +10,7 @@
 Each section corresponds to one paper/set of notes. For every topic listed, your task is threefold:
 1. **Understand it yourself** to the point you can derive the key results from scratch
 2. **Write an explanation** that a calculus-fluent freshman can follow, using concrete examples before abstract definitions
-3. **Ground it in the project**: every major concept has a direct connection to BM on manifolds — state it explicitly at the end of each section in your notes
+3. **Ground it in the project**: every major concept has a direct connection to BM on manifolds -- state it explicitly at the end of each section in your notes
 
 The papers are in strict dependency order. Do not start Paper N+1 until you can answer the checkpoint questions at the end of Paper N from memory.
 
@@ -22,9 +22,9 @@ The papers are in strict dependency order. Do not start Paper N+1 until you can 
 
 ---
 
-### Section 0: Prerequisites — Linear Algebra You Actually Need
+### Section 0: Prerequisites -- Linear Algebra You Actually Need
 
-Work through these before anything else. These are not review for completeness — each item reappears explicitly in the geometry.
+Work through these before anything else. These are not review for completeness -- each item reappears explicitly in the geometry.
 
 **Inner Products and Projections**
 - [x] Define the dot product on ℝⁿ as a bilinear, symmetric, positive definite form. State all three properties precisely.
@@ -45,18 +45,18 @@ Work through these before anything else. These are not review for completeness �
 
 **Quadratic Forms**
 - [ ] Define a quadratic form Q(v) = vᵀAv for symmetric A
-- [ ] Note: the first fundamental form (metric tensor) will be a quadratic form — it assigns a positive number to every tangent vector, measuring its squared length
+- [ ] Note: the first fundamental form (metric tensor) will be a quadratic form -- it assigns a positive number to every tangent vector, measuring its squared length
 
 ---
 
-### Section 1: Prerequisites — Multivariable Calculus You Actually Need
+### Section 1: Prerequisites -- Multivariable Calculus You Actually Need
 
 **Partial Derivatives and the Jacobian**
 - [ ] Define partial derivative ∂f/∂xᵢ as the directional derivative along the standard basis vector eᵢ
 - [ ] Define the gradient ∇f = (∂f/∂x₁, ..., ∂f/∂xⁿ) as the vector of all partial derivatives
 - [ ] Define the directional derivative D_v f = lim_{t→0} [f(x + tv) − f(x)]/t. Prove D_v f = ∇f · v when f is differentiable. This is the chain rule in disguise.
 - [ ] Define the Jacobian matrix Df|_x ∈ ℝᵐˣⁿ for a map f: ℝⁿ → ℝᵐ as the matrix of all partial derivatives: [Df]_{ij} = ∂fᵢ/∂xⱼ. Interpret: Df|_x is the best linear approximation to f near x.
-- [ ] State the chain rule for compositions: if h = f ∘ g, then Dh|_x = Df|_{g(x)} · Dg|_x. Memorize this — it is used constantly.
+- [ ] State the chain rule for compositions: if h = f ∘ g, then Dh|_x = Df|_{g(x)} · Dg|_x. Memorize this -- it is used constantly.
 
 **Change of Variables in Integrals**
 - [ ] State the substitution formula for a change of variables φ: U ⊂ ℝ² → V ⊂ ℝ²: ∫∫_V f(x,y) dx dy = ∫∫_U f(φ(u,v)) |det Dφ(u,v)| du dv
@@ -105,7 +105,7 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 - [ ] Parametrize S² = {(x,y,z) ∈ ℝ³ : x² + y² + z² = 1} using spherical coordinates: φ(θ,φ) = (sin θ cos φ, sin θ sin φ, cos θ) for θ ∈ (0,π), φ ∈ (0,2π)
 - [ ] Compute φ_θ and φ_φ explicitly
 - [ ] Compute φ_θ × φ_φ. Show it is nonzero for θ ∈ (0,π) (i.e., away from poles). Conclude S² is a regular surface.
-- [ ] Note: two patches are needed to cover the sphere (the poles require separate treatment). This is a topological subtlety — do not paper over it.
+- [ ] Note: two patches are needed to cover the sphere (the poles require separate treatment). This is a topological subtlety -- do not paper over it.
 
 **Concrete Computations: Torus T²**
 - [ ] Parametrize T² with parameters (u,v), u ∈ [0,2π), v ∈ [0,2π), with R = major radius (distance from z-axis to tube center), r = minor radius (tube radius): φ(u,v) = ((R + r cos v) cos u, (R + r cos v) sin u, r sin v)
@@ -128,7 +128,7 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 
 ---
 
-## Paper 2: The First Fundamental Form — Measuring Geometry on a Surface
+## Paper 2: The First Fundamental Form -- Measuring Geometry on a Surface
 
 **Goal:** Understand how to measure lengths, angles, and areas intrinsically on a surface. This is the metric. By the end, you should be able to write down the metric tensor for S² and T², compute areas, and understand what "Riemannian geometry" means at an intuitive level.
 
@@ -142,7 +142,7 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 - [ ] Write the metric tensor as a 2×2 matrix: g = [[E, F], [F, G]]. State: g is symmetric and positive definite (since the surface is regular).
 - [ ] Rewrite arc length: L = ∫ √(E u'² + 2F u'v' + G v'²) dt. This is the arc length formula in terms of surface parameters.
 - [ ] Define the area element: dA = |φ_u × φ_v| du dv = √(EG − F²) du dv. (Derive this: |φ_u × φ_v|² = |φ_u|²|φ_v|² − (φ_u · φ_v)² = EG − F².)
-- [ ] State: all of these measurements — length, angle, area — depend only on the functions E, F, G, not on the ambient ℝ³. This is the beginning of intrinsic geometry.
+- [ ] State: all of these measurements -- length, angle, area -- depend only on the functions E, F, G, not on the ambient ℝ³. This is the beginning of intrinsic geometry.
 
 **Concrete Computations: S²**
 - [ ] With spherical parametrization φ(θ,φ): compute E, F, G
@@ -170,7 +170,7 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 
 **Isometries**
 - [ ] Define an isometry between surfaces S and S̃: a diffeomorphism f: S → S̃ that preserves the first fundamental form (lengths and angles).
-- [ ] State: the flat torus ℝ²/ℤ² is isometric to itself, but NOT isometric to the embedded torus T² in ℝ³. They have the same topology but different geometries. **This is why "converges to uniform" is wrong for the embedded torus — the geometry is different.**
+- [ ] State: the flat torus ℝ²/ℤ² is isometric to itself, but NOT isometric to the embedded torus T² in ℝ³. They have the same topology but different geometries. **This is why "converges to uniform" is wrong for the embedded torus -- the geometry is different.**
 - [ ] Concrete example: show that unrolling a cylinder onto a flat strip is an isometry (the metric on the cylinder is ds² = dz² + dθ², same as the flat metric in Cartesian coordinates after unrolling). The cylinder and the plane are locally isometric but globally different.
 
 ---
@@ -178,12 +178,12 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 ### Section 5: The Second Fundamental Form and Curvature
 
 **Motivation**
-- [ ] State the question: the first fundamental form measures intrinsic geometry (lengths, angles). But how "curved" is the surface? A cylinder has E=G=1, F=0 just like the plane — they are locally isometric — yet a cylinder is clearly curved in ℝ³. The second fundamental form captures this extrinsic curvature.
+- [ ] State the question: the first fundamental form measures intrinsic geometry (lengths, angles). But how "curved" is the surface? A cylinder has E=G=1, F=0 just like the plane -- they are locally isometric -- yet a cylinder is clearly curved in ℝ³. The second fundamental form captures this extrinsic curvature.
 
 **Definition**
 - [ ] Define the second derivatives of φ: φ_{uu}, φ_{uv}, φ_{vv} (compute these for practice on S² and T²)
 - [ ] Note: φ_{uu} is not necessarily tangent to the surface. Decompose it: φ_{uu} = (tangential component) + (normal component). The normal component is L N where L = φ_{uu} · N.
-- [ ] Define the coefficients of the second fundamental form: L = φ_{uu} · N, M = φ_{uv} · N, N_coeff = φ_{vv} · N (note: overloaded notation — use e, f, g or L, M, N carefully in your notes)
+- [ ] Define the coefficients of the second fundamental form: L = φ_{uu} · N, M = φ_{uv} · N, N_coeff = φ_{vv} · N (note: overloaded notation -- use e, f, g or L, M, N carefully in your notes)
 - [ ] Write the second fundamental form matrix: II = [[L, M], [M, N_coeff]]
 
 **Principal Curvatures**
@@ -206,8 +206,8 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 - [ ] Compute mean curvature: H = (R + 2r cos v)/(2r(R + r cos v))
 
 **Theorema Egregium (Statement Only)**
-- [ ] State Gauss's Theorema Egregium: the Gaussian curvature K is an intrinsic invariant — it can be computed from the first fundamental form alone, without reference to the ambient ℝ³. This is non-obvious: K = k₁k₂ is defined extrinsically via the shape operator, but Gauss showed it depends only on g_{ij}.
-- [ ] State the formula (Brioschi formula): K = [expression in E, F, G and their derivatives — look this up in Pressley]. You do not need to derive it, but you should state it.
+- [ ] State Gauss's Theorema Egregium: the Gaussian curvature K is an intrinsic invariant -- it can be computed from the first fundamental form alone, without reference to the ambient ℝ³. This is non-obvious: K = k₁k₂ is defined extrinsically via the shape operator, but Gauss showed it depends only on g_{ij}.
+- [ ] State the formula (Brioschi formula): K = [expression in E, F, G and their derivatives -- look this up in Pressley]. You do not need to derive it, but you should state it.
 - [ ] Corollary: a flat map of the sphere cannot preserve distances (any map from S² to ℝ² must distort lengths). This is why no world map is perfectly accurate.
 - [ ] **Project connection**: Gaussian curvature will appear in the Gauss-Bonnet theorem and influences the spectral theory of the Laplace-Beltrami operator.
 
@@ -233,7 +233,7 @@ The goal here is to build intuition for how calculus interacts with geometry. Su
 - [ ] Derive the geodesic equations in terms of surface parameters (u(t), v(t)):
   - u'' + Γ^u_{uu}(u')² + 2Γ^u_{uv}u'v' + Γ^u_{vv}(v')² = 0
   - v'' + Γ^v_{uu}(u')² + 2Γ^v_{uv}u'v' + Γ^v_{vv}(v')² = 0
-- [ ] The symbols Γ^k_{ij} are called Christoffel symbols — define them (see next section). For now, note that geodesics depend on the first fundamental form alone.
+- [ ] The symbols Γ^k_{ij} are called Christoffel symbols -- define them (see next section). For now, note that geodesics depend on the first fundamental form alone.
 
 **Christoffel Symbols**
 - [ ] Define the Christoffel symbols of the first kind: [ij, k] = ½(∂_i g_{jk} + ∂_j g_{ik} − ∂_k g_{ij})
@@ -264,12 +264,12 @@ This is the conceptually hardest section. Take more time here than anywhere else
 
 **The Problem with Ordinary Differentiation**
 - [ ] State the problem: if V(t) is a vector field along a curve γ(t) on a surface, and we want to differentiate V, the naive derivative V'(t) = dV/dt is a vector in ℝ³ that may point off the surface. We need a notion of derivative that stays tangential.
-- [ ] Concrete example: take γ(t) to be a meridian on S² (a great circle at fixed φ). The tangent field V(t) = γ'(t) is always tangent to S². Compute V'(t) in ℝ³ — it points toward the center of the sphere, i.e., normal to S². So V'(t) is not a tangent vector. The "intrinsic" rate of change of V along γ is zero (V is a geodesic, so it parallel transports its own tangent vector), but the ambient derivative is nonzero.
+- [ ] Concrete example: take γ(t) to be a meridian on S² (a great circle at fixed φ). The tangent field V(t) = γ'(t) is always tangent to S². Compute V'(t) in ℝ³ -- it points toward the center of the sphere, i.e., normal to S². So V'(t) is not a tangent vector. The "intrinsic" rate of change of V along γ is zero (V is a geodesic, so it parallel transports its own tangent vector), but the ambient derivative is nonzero.
 - [ ] Define the covariant derivative: ∇_{γ'(t)} V = (V'(t))_T = V'(t) − (V'(t) · N) N, the projection of V'(t) onto the tangent plane. This is the tangential component of V'(t).
 
 **Parallel Transport**
 - [ ] Define: a vector field V(t) along γ(t) is parallel if ∇_{γ'(t)} V = 0, i.e., the covariant derivative is identically zero along the curve. The vector is "not rotating" intrinsically as you move along γ.
-- [ ] Give the key example: transport a tangent vector on S² along a spherical triangle (1/8 of the sphere). When you return to the start, the vector has rotated by π/2. This is holonomy — a direct consequence of curvature. Draw this.
+- [ ] Give the key example: transport a tangent vector on S² along a spherical triangle (1/8 of the sphere). When you return to the start, the vector has rotated by π/2. This is holonomy -- a direct consequence of curvature. Draw this.
 - [ ] State: parallel transport preserves the inner product between vectors. If V, W are both parallel along γ, then d/dt (V · W) = 0.
 - [ ] Connect to Christoffel symbols: the parallel transport equation in coordinates is dVᵏ/dt + Γᵏ_{ij} (dxⁱ/dt) Vʲ = 0. The Christoffel symbols measure the "correction" needed to keep a vector parallel.
 
@@ -282,7 +282,7 @@ This is the conceptually hardest section. Take more time here than anywhere else
 **The Riemann Curvature Tensor (Conceptual Only)**
 - [ ] Define: the Riemann curvature tensor R(X,Y)Z = ∇_X ∇_Y Z − ∇_Y ∇_X Z − ∇_{[X,Y]} Z. It measures the failure of covariant derivatives to commute.
 - [ ] State: for surfaces in ℝ³, R is determined entirely by the Gaussian curvature K.
-- [ ] Intuition: on a flat plane, parallel transport around any closed loop returns the vector unchanged (R=0). On a curved surface, parallel transport around a loop rotates the vector — the rotation angle equals K times the enclosed area (Gauss-Bonnet). This is why holonomy measures curvature.
+- [ ] Intuition: on a flat plane, parallel transport around any closed loop returns the vector unchanged (R=0). On a curved surface, parallel transport around a loop rotates the vector -- the rotation angle equals K times the enclosed area (Gauss-Bonnet). This is why holonomy measures curvature.
 - [ ] You do not need to compute R explicitly for this project, but you must know what it measures.
 
 **Checkpoint: Before proceeding, you should be able to answer these without notes**
@@ -304,7 +304,7 @@ This is the conceptually hardest section. Take more time here than anywhere else
 
 **Why Abstract Manifolds?**
 - [ ] Motivate: the Poincaré hyperbolic disk H² is not naturally a surface in ℝ³ with an induced metric. It is defined abstractly as a set with a Riemannian metric imposed on it. To handle H², we need the abstract framework.
-- [ ] For S² and T², the abstract framework produces the same results as the embedded framework — so mastering the embedded case first is the right approach.
+- [ ] For S² and T², the abstract framework produces the same results as the embedded framework -- so mastering the embedded case first is the right approach.
 
 **Definitions (State Precisely, Do Not Derive)**
 - [ ] Define a topological manifold of dimension n: a Hausdorff topological space M such that every point has a neighborhood homeomorphic to ℝⁿ
@@ -322,11 +322,11 @@ This is the conceptually hardest section. Take more time here than anywhere else
 
 **The Poincaré Disk H²**
 - [ ] Define H² = {(x,y) ∈ ℝ² : x² + y² < 1} (the open unit disk) with metric: g_{ij} = (4/(1−r²)²) δ_{ij} where r² = x² + y²
-- [ ] This means ds² = 4(dx² + dy²)/(1−r²)² — the metric is the Euclidean metric scaled by a position-dependent conformal factor
-- [ ] Note: as r → 1 (approaching the boundary), the conformal factor blows up — distances near the boundary are much larger than they appear in the disk. This is why "equal" triangles near the boundary look smaller.
+- [ ] This means ds² = 4(dx² + dy²)/(1−r²)² -- the metric is the Euclidean metric scaled by a position-dependent conformal factor
+- [ ] Note: as r → 1 (approaching the boundary), the conformal factor blows up -- distances near the boundary are much larger than they appear in the disk. This is why "equal" triangles near the boundary look smaller.
 - [ ] Compute the area element: dA = 4 dx dy / (1−r²)². Show the total area of H² is infinite.
 - [ ] State the Gaussian curvature of H²: K = −1 everywhere. H² is the unique (up to scaling) simply connected surface of constant negative curvature.
-- [ ] **Project connection**: BM on H² does NOT converge to a uniform distribution — H² has infinite volume. Instead, BM paths converge to the boundary circle almost surely (the Martin boundary). This is the striking visual in the stretch goal.
+- [ ] **Project connection**: BM on H² does NOT converge to a uniform distribution -- H² has infinite volume. Instead, BM paths converge to the boundary circle almost surely (the Martin boundary). This is the striking visual in the stretch goal.
 
 ---
 
@@ -376,7 +376,7 @@ This is the conceptually hardest section. Take more time here than anywhere else
 
 ---
 
-### Section 10: Itô vs. Stratonovich — The Coordinate Problem
+### Section 10: Itô vs. Stratonovich -- The Coordinate Problem
 
 **Review of Itô Calculus on ℝⁿ**
 - [ ] State Itô's formula: for X_t satisfying dX = b dt + σ dW and f smooth: df(X_t) = ∂f/∂xᵢ dXⁱ + ½ σσᵀ_{ij} ∂²f/∂xᵢ∂xⱼ dt. The second-order term is the Itô correction.
@@ -384,8 +384,8 @@ This is the conceptually hardest section. Take more time here than anywhere else
 - [ ] State the conversion formula: X ∘ dW = X dW + ½ d[X, W]_t where [X, W]_t is the quadratic covariation. For σ(X_t): Stratonovich drift = Itô drift + ½ σ(X) σ'(X).
 
 **Why Itô Fails on Manifolds**
-- [ ] State the problem: suppose X_t ∈ S and we change coordinates y = φ(x) (a diffeomorphism). The Itô formula for y(X_t) gives: dy = Dφ(X) dX + ½ trace(D²φ(X) σσᵀ) dt. The second term is NOT intrinsic — it depends on the coordinate change φ, not just the geometry of S.
-- [ ] Consequence: if you write an Itô SDE in one coordinate chart and transform it to another chart, you get a different SDE with extra drift terms. This means Itô SDEs are NOT coordinate-invariant — two observers using different parametrizations would disagree about what process is running.
+- [ ] State the problem: suppose X_t ∈ S and we change coordinates y = φ(x) (a diffeomorphism). The Itô formula for y(X_t) gives: dy = Dφ(X) dX + ½ trace(D²φ(X) σσᵀ) dt. The second term is NOT intrinsic -- it depends on the coordinate change φ, not just the geometry of S.
+- [ ] Consequence: if you write an Itô SDE in one coordinate chart and transform it to another chart, you get a different SDE with extra drift terms. This means Itô SDEs are NOT coordinate-invariant -- two observers using different parametrizations would disagree about what process is running.
 - [ ] State: the Stratonovich SDE transforms correctly: dy = Dφ(X) ∘ dX, with no extra drift terms. Stratonovich SDEs are coordinate-invariant.
 - [ ] **Conclusion**: the intrinsic Brownian motion on a manifold must be defined via a Stratonovich SDE. Any Itô representation will have extra drift terms (the Itô-Stratonovich correction) involving the Christoffel symbols.
 

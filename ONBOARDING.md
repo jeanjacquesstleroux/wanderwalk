@@ -268,9 +268,7 @@ where $d(\cdot, \cdot)$ is distance measured along the surface and $K_h$ is a bu
 
 ### The Sphere
 
-The sphere is the natural first surface because its geometry is familiar and its curvature is
-
-uniform; every point on the sphere looks like every other point. The behavior of Brownian motion on the sphere is well-understood theoretically: it is recurrent (the particle returns arbitrarily close to its starting point infinitely often), and the heat kernel converges to the uniform distribution at a rate governed by the first nontrivial eigenvalue of the Laplace-Beltrami operator.
+The sphere is the natural first surface because its geometry is familiar and its curvature is uniform; every point on the sphere looks like every other point. The behavior of Brownian motion on the sphere is thus well-understood. It is recurrent (the particle returns arbitrarily close to its starting point infinitely often), and the heat kernel converges to the uniform distribution at a rate governed by the first nontrivial eigenvalue of the Laplace-Beltrami operator.
 
 The sphere also provides the clearest opportunity for validation: the exact heat kernel on the
 
@@ -278,63 +276,27 @@ sphere is known, expressed as a series involving Legendre polynomials. Comparing
 
 density from simulation to the exact formula at several times gives a concrete accuracy check.
 
-**In symbols.** The exact heat kernel on the unit sphere is a series in Legendre polynomials $P_\ell$, evaluated at the dot product $x \cdot y$ (which records the angle between the start $x$ and the point $y$),
-
-$$
-p(t, x, y) = \sum_{\ell = 0}^{\infty} \frac{2\ell + 1}{4\pi}\, e^{-\ell(\ell + 1)\, t / 2}\, P_\ell(x \cdot y).
-$$
-
-The eigenvalues of the Laplace-Beltrami operator are $\lambda_\ell = \ell(\ell + 1)$, so $\lambda_0 = 0,\ \lambda_1 = 2,\ \lambda_2 = 6, \dots$. The $\ell = 0$ term is the constant $\tfrac{1}{4\pi}$, the uniform density on the sphere (whose surface area is $4\pi$). Every later term decays in time, and the slowest is $\ell = 1$, fading like $e^{-\lambda_1 t / 2} = e^{-t}$. That single number, the first nonzero eigenvalue, sets how fast the particle cloud becomes uniform.
-
 ### The Torus
 
 The torus introduces a new geometric feature: it is flat (its Gaussian curvature is zero almost
 
 everywhere), but its global topology is non-trivial. Brownian motion on a flat torus behaves
 
-locally exactly like Brownian motion on a flat plane -- but the torus wraps around, so the
+locally exactly like Brownian motion on a flat plane — but the torus wraps around, so the
 
 particle cannot escape. The invariant distribution is again uniform. The heat kernel on the
 
-torus has a particularly elegant form -- it is a sum of flat Gaussians placed at the images of
+torus has a particularly elegant form — it is a sum of flat Gaussians placed at the images of
 
-the starting point under the torus's translation symmetry -- which connects the simulation
+the starting point under the torus's translation symmetry — which connects the simulation
 
 directly to the theory of theta functions and Fourier analysis on groups.
-
-**In symbols.** It helps to keep apart two related objects that both go by "the torus."
-
-The donut surface sitting in $\mathbb{R}^3$ (the one the simulator actually steps on) has a Gaussian curvature that changes around the tube,
-
-$$
-K(u, v) = \frac{\cos v}{r\,(R + r\cos v)}.
-$$
-
-It is positive on the outer rim ($v = 0$), negative on the inner rim ($v = \pi$), and exactly zero along the top and bottom circles ($v = \pm\tfrac{\pi}{2}$). Added up over the whole surface it comes to zero,
-
-$$
-\int_{T^2} K \, dA = 2\pi\, \chi(T^2) = 0,
-$$
-
-by the Gauss-Bonnet theorem, since the torus has Euler characteristic $\chi = 0$. This vanishing total is the sense in which the curvature averages out.
-
-The idealized flat torus is the square $[0, 1] \times [0, 1]$ with opposite edges glued, and its curvature is exactly zero everywhere. Its heat kernel is a sum of flat Gaussians placed at every whole-number shift of the starting point (the method of images), which is where the link to theta functions comes from,
-
-$$
-p(t, x, y) = \sum_{n \in \mathbb{Z}^2} \frac{1}{2\pi t}\, \exp\!\left(-\frac{\lVert x - y - n \rVert^2}{2t}\right).
-$$
-
-Each term is a copy of the particle reentering from the opposite edge.
 
 The torus is also computationally instructive because periodic boundary conditions are a staple technique in physics simulations. Implementing them correctly requires careful modular arithmetic.
 
 ### The Hyperbolic Plane (Our Stretch Goal)
 
-The hyperbolic plane is the most striking surface in the project. Its constant
-
-negative curvature has a counterintuitive consequence: there is so much room in the hyperbolic plane that a random walker is transient. The particle drifts to infinity and never returns.
-
-In the Poincaré disk representation, where the entire infinite hyperbolic plane is mapped to the interior of a unit disk, this means the particle's path converges to a point on the boundary circle, chosen at random. This boundary behavior is called the Poisson boundary of the hyperbolic plane.
+The hyperbolic plane is the most striking surface in the project. Its constant negative curvature has a counterintuitive consequence: there is so much room in the hyperbolic plane that a random walker is transient. The particle drifts to infinity and never returns. In the Poincaré disk representation, where the entire infinite hyperbolic plane is mapped to the interior of a unit disk, this means the particle's path converges to a point on the boundary circle, chosen at random. This boundary behavior is called the Poisson boundary of the hyperbolic plane.
 
 Unlike the sphere and torus, where the particle cloud eventually fills the space uniformly, the cloud on the hyperbolic plane concentrates toward the boundary circle and never equilibrates.
 
@@ -356,9 +318,7 @@ where $\beta_t$ is an ordinary one-dimensional Brownian motion. For large $\rho$
 
 ## 5. Implementation Strategy
 
-The project is organized as a Python library with a testable structure. The manifold geometry (how points are represented, how tangent vectors are computed, how the projection step works) is separate from the simulation process (which only knows that it needs a "step" and a "project" operation), which is separate from the visualization layer. Thus, adding a new surface requires implementing only the geometry module for that surface, with no changes to the simulator or the visualizer. It also makes the code testable since each module has clear inputs and outputs that can be verified
-
-independently.
+The project is organized as a Python library with a testable structure. The manifold geometry (how points are represented, how tangent vectors are computed, how the projection step works) is separate from the simulation process (which only knows that it needs a "step" and a "project" operation), which is separate from the visualization layer. Thus, adding a new surface requires implementing only the geometry module for that surface, with no changes to the simulator or the visualizer. It also makes the code testable since each module has clear inputs and outputs that can be verified independently.
 
 ### Performance
 

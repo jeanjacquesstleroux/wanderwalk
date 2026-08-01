@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Notebook-04</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Notebook</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7829,29 +7829,7 @@ derivation, not against an empirical curve fit.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e2b37cbc">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Imports</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">kstest</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">src.manifolds.hyperbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">PoincareDisk</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">src.simulation.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">hyperbolic_simulator</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput" id="cell-id=e2b37cbc">
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d57a8703">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7874,59 +7852,7 @@ arbitrary correction).</li>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=11fdba98">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">disk</span> <span class="o">=</span> <span class="n">PoincareDisk</span><span class="p">()</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">random_interior_point</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">max_radius</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Samples a point genuinely inside the disk via polar coordinates</span>
-<span class="sd">    (sampling x, y independently and uniformly can land outside the unit</span>
-<span class="sd">    disk, e.g. (0.9, 0.9) has norm ~1.27 &gt; 1)."""</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">)</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)])</span>
-
-<span class="c1"># project_to_tangent is the identity</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">random_interior_point</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">disk</span><span class="o">.</span><span class="n">project_to_tangent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
-
-<span class="c1"># project_to_manifold leaves interior points unchanged</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">random_interior_point</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">disk</span><span class="o">.</span><span class="n">project_to_manifold</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-
-<span class="c1"># project_to_manifold is idempotent</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">random_interior_point</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">max_radius</span><span class="o">=</span><span class="mf">0.999</span><span class="p">)</span>
-    <span class="n">once</span> <span class="o">=</span> <span class="n">disk</span><span class="o">.</span><span class="n">project_to_manifold</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">twice</span> <span class="o">=</span> <span class="n">disk</span><span class="o">.</span><span class="n">project_to_manifold</span><span class="p">(</span><span class="n">once</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">once</span><span class="p">,</span> <span class="n">twice</span><span class="p">)</span>
-
-<span class="c1"># project_to_manifold clamps a point beyond the boundary to radius 1 - epsilon,</span>
-<span class="c1"># preserving its angle</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-    <span class="n">over_radius</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">over_radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)])</span>
-    <span class="n">clamped</span> <span class="o">=</span> <span class="n">disk</span><span class="o">.</span><span class="n">project_to_manifold</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">clamped</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">disk</span><span class="o">.</span><span class="n">epsilon</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">clamped</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">clamped</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"All structural checks passed."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=11fdba98">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -7957,60 +7883,7 @@ strictly inside the disk, and the clamp fires rarely, at a rate that shrinks as 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3f3c693b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_single_path</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Runs one particle's path by hand (rather than via euler_maruyama_step)</span>
-<span class="sd">    so we can check every point stays inside the disk."""</span>
-    <span class="n">local_disk</span> <span class="o">=</span> <span class="n">PoincareDisk</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()]</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">noise</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">sample_tangent_noise</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">project_to_manifold</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">noise</span><span class="p">)</span>
-        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-
-<span class="n">T_long</span> <span class="o">=</span> <span class="mi">100_000</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">run_single_path</span><span class="p">(</span><span class="n">T_long</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
-<span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">radii</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Domain constraint held for all </span><span class="si">{</span><span class="n">T_long</span><span class="si">}</span><span class="s2"> steps. Max radius reached: </span><span class="si">{</span><span class="n">radii</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.10f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">clamp_trigger_rate</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Runs an ensemble of N particles for total_time/dt steps and returns the</span>
-<span class="sd">    fraction of individual particle-steps whose proposed step would have landed</span>
-<span class="sd">    at or beyond 1 - epsilon before the clamp corrects it. A single path's</span>
-<span class="sd">    trigger count is dominated by chance (whether that one path happened to</span>
-<span class="sd">    wander close to the boundary); pooling across many particles gives a</span>
-<span class="sd">    stable rate estimate."""</span>
-    <span class="n">local_disk</span> <span class="o">=</span> <span class="n">PoincareDisk</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_time</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">triggers</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">noise</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">sample_tangent_noise_multiple</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="n">proposed</span> <span class="o">=</span> <span class="n">points</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">noise</span>
-        <span class="n">triggers</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">proposed</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">))</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">project_to_manifold_multiple</span><span class="p">(</span><span class="n">proposed</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">triggers</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Clamp-trigger rate as dt shrinks (ensemble of 1000 particles, total elapsed time t = 50):"</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">dt_i</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">]:</span>
-    <span class="n">rate</span> <span class="o">=</span> <span class="n">clamp_trigger_rate</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">total_time</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt_i</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  dt=</span><span class="si">{</span><span class="n">dt_i</span><span class="si">:</span><span class="s2">&lt;7</span><span class="si">}</span><span class="s2"> rate=</span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=3f3c693b">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -8061,30 +7934,7 @@ near the origin the way Sphere/Torus paths do.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=db11f0cb">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">theta_circle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_circle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_circle</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Single trajectory on the Poincare disk (red=start, blue=end)"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=db11f0cb">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -8134,84 +7984,7 @@ not a breakdown of the theory (the small-$\rho$ limit is checked separately, and
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=495b1300">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">radial_coefficient_recovery</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Simulates N particles for T steps of size dt, and for each step bins</span>
-<span class="sd">    the *current* rho value and accumulates count / sum / sum-of-squares of</span>
-<span class="sd">    the increment delta_rho within that bin. Returns those accumulators, not</span>
-<span class="sd">    a stored trajectory, so dt can be made small without a memory blowup."""</span>
-    <span class="n">local_disk</span> <span class="o">=</span> <span class="n">PoincareDisk</span><span class="p">()</span>
-    <span class="n">n_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">rho</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">geodesic_distance_from_origin_multiple</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
-    <span class="n">sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
-    <span class="n">sumsqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">noise</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">sample_tangent_noise_multiple</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-        <span class="n">points_new</span> <span class="o">=</span> <span class="n">points</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">*</span> <span class="n">noise</span>
-        <span class="n">points_new</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">project_to_manifold_multiple</span><span class="p">(</span><span class="n">points_new</span><span class="p">)</span>
-        <span class="n">rho_new</span> <span class="o">=</span> <span class="n">local_disk</span><span class="o">.</span><span class="n">geodesic_distance_from_origin_multiple</span><span class="p">(</span><span class="n">points_new</span><span class="p">)</span>
-        <span class="n">delta_rho</span> <span class="o">=</span> <span class="n">rho_new</span> <span class="o">-</span> <span class="n">rho</span>
-        <span class="n">bin_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">valid</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bin_idx</span> <span class="o">&lt;</span> <span class="n">n_bins</span><span class="p">)</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">bin_idx</span><span class="p">[</span><span class="n">valid</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">sums</span><span class="p">,</span> <span class="n">bin_idx</span><span class="p">[</span><span class="n">valid</span><span class="p">],</span> <span class="n">delta_rho</span><span class="p">[</span><span class="n">valid</span><span class="p">])</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">sumsqs</span><span class="p">,</span> <span class="n">bin_idx</span><span class="p">[</span><span class="n">valid</span><span class="p">],</span> <span class="n">delta_rho</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">points</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="n">points_new</span><span class="p">,</span> <span class="n">rho_new</span>
-    <span class="k">return</span> <span class="n">counts</span><span class="p">,</span> <span class="n">sums</span><span class="p">,</span> <span class="n">sumsqs</span>
-
-<span class="n">dt_fine</span> <span class="o">=</span> <span class="mf">0.0005</span>
-<span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>  <span class="c1"># excludes [0, 1) -- see markdown above</span>
-<span class="n">counts</span><span class="p">,</span> <span class="n">sums</span><span class="p">,</span> <span class="n">sumsqs</span> <span class="o">=</span> <span class="n">radial_coefficient_recovery</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">40_000</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt_fine</span><span class="p">,</span> <span class="n">bin_edges</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'rho range'</span><span class="si">:</span><span class="s2">&lt;16</span><span class="si">}{</span><span class="s1">'n'</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="s1">'drift (emp)'</span><span class="si">:</span><span class="s2">&lt;14</span><span class="si">}{</span><span class="s1">'drift (theory)'</span><span class="si">:</span><span class="s2">&lt;16</span><span class="si">}{</span><span class="s1">'within k*SE'</span><span class="si">:</span><span class="s2">&lt;13</span><span class="si">}</span><span class="s2">"</span>
-      <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'diffusion (emp)'</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}{</span><span class="s1">'within k*SE'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">k</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># generous multiple of standard error, analogous to Notebook-01's 2*SE tolerance</span>
-<span class="n">all_ok</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">recovered_rho_centers</span><span class="p">,</span> <span class="n">recovered_drifts</span><span class="p">,</span> <span class="n">recovered_theory_drifts</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">:</span>
-        <span class="k">continue</span>
-    <span class="n">mean_delta_rho</span> <span class="o">=</span> <span class="n">sums</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">/</span> <span class="n">n</span>
-    <span class="n">var_delta_rho</span> <span class="o">=</span> <span class="p">(</span><span class="n">sumsqs</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">mean_delta_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">rho_center</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="n">b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
-
-    <span class="n">empirical_drift</span> <span class="o">=</span> <span class="n">mean_delta_rho</span> <span class="o">/</span> <span class="n">dt_fine</span>
-    <span class="n">theory_drift</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">rho_center</span><span class="p">)</span>
-    <span class="n">drift_se</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_delta_rho</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt_fine</span>
-    <span class="n">drift_ok</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">empirical_drift</span> <span class="o">-</span> <span class="n">theory_drift</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="o">*</span> <span class="n">drift_se</span>
-
-    <span class="n">empirical_diffusion</span> <span class="o">=</span> <span class="n">var_delta_rho</span> <span class="o">/</span> <span class="n">dt_fine</span>
-    <span class="n">diffusion_se</span> <span class="o">=</span> <span class="n">empirical_diffusion</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">diffusion_ok</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">empirical_diffusion</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="o">*</span> <span class="n">diffusion_se</span>
-
-    <span class="n">all_ok</span> <span class="o">&amp;=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">drift_ok</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">diffusion_ok</span><span class="p">)</span>
-    <span class="n">recovered_rho_centers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rho_center</span><span class="p">)</span>
-    <span class="n">recovered_drifts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">empirical_drift</span><span class="p">)</span>
-    <span class="n">recovered_theory_drifts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theory_drift</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">b</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">) n=</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">&lt;9.0f</span><span class="si">}</span><span class="s2">"</span>
-          <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">empirical_drift</span><span class="si">:</span><span class="s2">&lt;14.4f</span><span class="si">}{</span><span class="n">theory_drift</span><span class="si">:</span><span class="s2">&lt;16.4f</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">drift_ok</span><span class="p">)</span><span class="si">:</span><span class="s2">&lt;13</span><span class="si">}</span><span class="s2">"</span>
-          <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">empirical_diffusion</span><span class="si">:</span><span class="s2">&lt;18.4f</span><span class="si">}{</span><span class="n">diffusion_ok</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="k">assert</span> <span class="n">all_ok</span><span class="p">,</span> <span class="s2">"Empirical radial drift/diffusion deviates from the derived SDE beyond tolerance"</span>
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"All binned drift and diffusion coefficients matched the derived radial SDE within tolerance."</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=495b1300">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -8244,28 +8017,7 @@ All binned drift and diffusion coefficients matched the derived radial SDE withi
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d9c1cd86">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Visualize the coefficient recovery</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">recovered_rho_centers</span><span class="p">,</span> <span class="n">recovered_drifts</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"empirical E[drho|rho]/dt"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">recovered_rho_centers</span><span class="p">,</span> <span class="n">recovered_theory_drifts</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"theory: (1/2) coth(rho)"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"rho"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"drift"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Radial drift: empirical vs. derived (1/2) coth(rho)"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=d9c1cd86">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -8308,40 +8060,7 @@ respectively by then, where $\coth(\rho)$ is already within $10^{-4}$ of 1).</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f4196362">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">N_particles</span> <span class="o">=</span> <span class="mi">4000</span>
-<span class="n">T_steps</span> <span class="o">=</span> <span class="mi">3000</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">trajectory</span> <span class="o">=</span> <span class="n">hyperbolic_simulator</span><span class="p">(</span><span class="n">T_steps</span><span class="p">,</span> <span class="n">N_particles</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>  <span class="c1"># shape (T, N, 2)</span>
-<span class="n">radii_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">trajectory</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>               <span class="c1"># (T, N)</span>
-<span class="n">rho_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">radii_all</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">radii_all</span><span class="p">))</span>      <span class="c1"># (T, N)</span>
-
-<span class="n">t1_step</span><span class="p">,</span> <span class="n">t2_step</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">3000</span>  <span class="c1"># t = 15 and t = 30</span>
-<span class="n">paired_diff</span> <span class="o">=</span> <span class="n">rho_all</span><span class="p">[</span><span class="n">t2_step</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">rho_all</span><span class="p">[</span><span class="n">t1_step</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># per-particle, so we can pair</span>
-<span class="n">elapsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">t2_step</span> <span class="o">-</span> <span class="n">t1_step</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
-
-<span class="n">empirical_rate</span> <span class="o">=</span> <span class="n">paired_diff</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="n">elapsed</span>
-<span class="n">rate_se</span> <span class="o">=</span> <span class="n">paired_diff</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N_particles</span><span class="p">)</span> <span class="o">/</span> <span class="n">elapsed</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"E[rho] at t=15: </span><span class="si">{</span><span class="n">rho_all</span><span class="p">[</span><span class="n">t1_step</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"E[rho] at t=30: </span><span class="si">{</span><span class="n">rho_all</span><span class="p">[</span><span class="n">t2_step</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Empirical growth rate between t=15 and t=30: </span><span class="si">{</span><span class="n">empirical_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (SE = </span><span class="si">{</span><span class="n">rate_se</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Predicted asymptotic rate: 0.5"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Deviation in units of SE: </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">empirical_rate</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">rate_se</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">empirical_rate</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">rate_se</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=f4196362">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -8376,40 +8095,7 @@ near the boundary.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8160154c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">final_positions</span> <span class="o">=</span> <span class="n">trajectory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">final_radii</span> <span class="o">=</span> <span class="n">radii_all</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">near_boundary</span> <span class="o">=</span> <span class="n">final_positions</span><span class="p">[</span><span class="n">final_radii</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">]</span>
-<span class="n">angles</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">near_boundary</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">near_boundary</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-<span class="n">angles_unit_interval</span> <span class="o">=</span> <span class="n">angles</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-
-<span class="n">statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">kstest</span><span class="p">(</span><span class="n">angles_unit_interval</span><span class="p">,</span> <span class="s2">"uniform"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Particles with radius &gt; 0.8 at t_final: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">N_particles</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"KS statistic: </span><span class="si">{</span><span class="n">statistic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># A very lenient threshold: we are only checking for gross non-uniformity, not</span>
-<span class="c1"># guarding against ordinary sampling variation in a single run.</span>
-<span class="k">assert</span> <span class="n">p_value</span> <span class="o">&gt;</span> <span class="mf">0.001</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">"polar"</span><span class="p">)</span>
-<span class="n">counts</span><span class="p">,</span> <span class="n">bin_edges_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
-<span class="n">bin_centers_angle</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bin_edges_angle</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges_angle</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers_angle</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">24</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">"teal"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Angular position of particles near the boundary"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=8160154c">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>

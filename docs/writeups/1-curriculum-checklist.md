@@ -1,8 +1,4 @@
 # Differential Geometry Curriculum -- Master Checklist
-### For: Brownian Motion on Manifolds Project
-### Audience: Freshman with calculus, linear algebra, probability
-### Structure: Five papers in dependency order
-
 ---
 
 ## How to Use This Document
@@ -11,8 +7,6 @@ Each section corresponds to one paper/set of notes. For every topic listed, your
 1. **Understand it yourself** to the point you can derive the key results from scratch
 2. **Write an explanation** that a calculus-fluent freshman can follow, using concrete examples before abstract definitions
 3. **Ground it in the project**: every major concept has a direct connection to BM on manifolds -- state it explicitly at the end of each section in your notes
-
-The papers are in strict dependency order. Do not start Paper N+1 until you can answer the checkpoint questions at the end of Paper N from memory.
 
 ---
 
@@ -27,17 +21,17 @@ The papers are in strict dependency order. Do not start Paper N+1 until you can 
 Work through these before anything else. These are not review for completeness -- each item reappears explicitly in the geometry.
 
 **Inner Products and Projections**
-- [x] Define the dot product on ℝⁿ as a bilinear, symmetric, positive definite form. State all three properties precisely.
-- [x] Define the norm induced by the dot product: |v| = √(v · v)
-- [x] Define the angle between two vectors via cos θ = (u · v)/(|u||v|). Derive this from the law of cosines.
-- [x] State and prove: two vectors are orthogonal iff their dot product is zero
-- [x] Define orthogonal projection of u onto v: proj_v(u) = (u·v / v·v) v
-- [x] Define the component of u orthogonal to v: u_⊥ = u − proj_v(u)
-- [x] **Key result**: Write the projection onto a subspace W with orthonormal basis {e_1, ..., e_k}: P_W(u) = Σ (u · e_i) e_i. Derive P_{W⊥}(u) = u − P_W(u). This is exactly the formula P_x v = v − (v·x)x used in the BM projection scheme when x is the unit normal.
-- [x] Define orthogonal complement W⊥ and prove ℝⁿ = W ⊕ W⊥
+- [] Define the dot product on ℝⁿ as a bilinear, symmetric, positive definite form. State all three properties precisely.
+- [] Define the norm induced by the dot product: |v| = √(v · v)
+- [] Define the angle between two vectors via cos θ = (u · v)/(|u||v|). Derive this from the law of cosines.
+- [] State and prove: two vectors are orthogonal iff their dot product is zero
+- [] Define orthogonal projection of u onto v: proj_v(u) = (u·v / v·v) v
+- [] Define the component of u orthogonal to v: u_⊥ = u − proj_v(u)
+- [] **Key result**: Write the projection onto a subspace W with orthonormal basis {e_1, ..., e_k}: P_W(u) = Σ (u · e_i) e_i. Derive P_{W⊥}(u) = u − P_W(u). This is exactly the formula P_x v = v − (v·x)x used in the BM projection scheme when x is the unit normal.
+- [] Define orthogonal complement W⊥ and prove ℝⁿ = W ⊕ W⊥
 
 **Matrices as Linear Maps**
-- [x] State: every linear map T: ℝⁿ → ℝᵐ has a matrix representation [T] depending on the choice of basis
+- [] State: every linear map T: ℝⁿ → ℝᵐ has a matrix representation [T] depending on the choice of basis
 - [ ] Define symmetric matrix (A = Aᵀ) and state the spectral theorem: every symmetric matrix has real eigenvalues and an orthonormal basis of eigenvectors
 - [ ] Define positive definite matrix: A is positive definite iff vᵀAv > 0 for all v ≠ 0. Equivalently, all eigenvalues are positive.
 - [ ] Define a change-of-basis matrix P and how components of a vector transform: if v = Σ vⁱ eᵢ in basis {eᵢ} and {ẽⱼ} is a new basis, how do the components vⁱ change? (Contravariant transformation rule)

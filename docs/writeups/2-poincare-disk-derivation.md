@@ -1,14 +1,11 @@
 # The Poincaré Disk: SDE Derivation
-### For: Brownian Motion on Manifolds Project
-### Purpose: derive, from this project's own stated conventions, the exact stochastic differential equation governing Brownian motion on $H^2$ in the Poincaré disk model -- so that every formula used in `src/manifolds/hyperbolic.py` traces back to a step here, rather than to a remembered or copied result.
+### Purpose: derive the stochastic differential equation governing Brownian motion on $H^2$ in the Poincaré disk model so that every formula used in `src/manifolds/hyperbolic.py` traces back to a step here.
 
 ---
 
-## 0. Why this needs its own derivation
+The sphere ($S^2$) and Torus ($T^2$) are embedded in $\mathbb{R}^3$. Their Brownian motion is built with an established algorithm: propose an ambient step, add it to the existing step, project back onto the surface. That method relies on the surface being isometrically embedded so Euclidean lengths of tangent vectors coincide with the surface's own metric.
 
-Sphere ($S^2$) and Torus ($T^2$) are embedded in $\mathbb{R}^3$. Their Brownian motion is built with the *projection method*: propose an ambient step, add it, project back onto the surface. That method relies on the surface being isometrically embedded so ambient Euclidean lengths of tangent vectors agree with the surface's own metric.
-
-$H^2$ has no isometric embedding in $\mathbb{R}^3$ (Hilbert's theorem), so the projection method does not apply. It must be handled intrinsically: points are $(x, y)$ in the open unit disk $D = \{(x,y) : x^2 + y^2 < 1\}$, carrying its own metric that is *not* the flat Euclidean one. Every formula below is derived directly from that metric and from this project's own stated generator convention (ONBOARDING.md §"Brownian Motion on a Manifold": *"the diffusion process whose generator is half the Laplace-Beltrami operator"*).
+$H^2$ has no isometric embedding in $\mathbb{R}^3$ (Hilbert's theorem), so the projection method does not apply. It must be handled diffrently. Instead, points are $(x, y)$ in the open unit disk $D = \{(x,y) : x^2 + y^2 < 1\}$, carrying its own metric that is not the flat Euclidean one.
 
 ---
 
@@ -20,7 +17,7 @@ $$
 g_{ij}(x,y) = \lambda(x,y)^2 \delta_{ij}, \qquad \lambda(x,y) = \frac{2}{1-x^2-y^2} = \frac{2}{1-r^2}, \qquad r^2 = x^2+y^2
 $$
 
-so $ds^2 = \lambda^2 (dx^2 + dy^2)$. This is a *conformal* metric: at every point it is a positive scalar multiple of the flat Euclidean metric, and that scalar blows up as $r \to 1$. Gaussian curvature is $K = -1$ everywhere.
+so $ds^2 = \lambda^2 (dx^2 + dy^2)$. This is a conformal metric: at every point it is a positive scalar multiple of the flat Euclidean metric, and that scalar blows up as $r \to 1$. Gaussian curvature is $K = -1$ everywhere.
 
 Because $g_{ij} = \lambda^2\delta_{ij}$ is diagonal, $g^{ij} = \lambda^{-2}\delta^{ij}$ (inverse), and $\det(g) = \lambda^4$, so $\sqrt{|g|} = \lambda^2$.
 

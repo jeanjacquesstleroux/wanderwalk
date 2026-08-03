@@ -396,10 +396,10 @@ On $\mathbb{R}^n$, the Laplacian $\Delta f = \sum \partial^2 f/\partial x_i^2$ g
 - [ ] **Practical implication**: use $\Delta t \leq 0.01$ for $S^2$ and $T^2$ simulations. At $\Delta t = 0.1$, the approximation error is large enough to see visually in the distribution plots.
 
 **Checkpoint**
-- [ ] Write the Stratonovich SDE for BM on $S^2$ without notes
-- [ ] Explain in words why Itô fails on manifolds (coordinate non-invariance argument)
+- [ ] Write the Stratonovich SDE for BM on $S^2$ 
+- [ ] Explain why Itô fails on manifolds (coordinate non-invariance argument)
 - [ ] Derive the Itô form of BM on $S^2$ and identify the inward drift term
-- [ ] Explain why the projection + renormalize scheme implements Stratonovich, not Itô
+- [ ] Explain why the projection + renormalize scheme implements Stratonovich and not Itô
 - [ ] Write the heat kernel formula for $S^2$; identify the eigenvalues, eigenfunctions, and long-time limit
 - [ ] State the invariant measures for $S^2$ and embedded $T^2$ and explain where they come from
 

@@ -1,6 +1,7 @@
 import numpy as np
 from src.manifolds.sphere import Sphere
 from scipy.stats import gaussian_kde
+from scipy.special import eval_legendre
 import matplotlib.pyplot as plt
 
 # Returns array of particles' position at times 0.1, 0.5, 1.0, 2.0
@@ -68,3 +69,20 @@ def estimate_density(samples, time_index):
     normalized_density = density / total_density
     
     return theta_grid, phi_grid, normalized_density, dtheta, dphi
+
+# Returns theoretical heat kernel density at given time t
+def estimate_theoretical_heat_kernel(theta_grid, phi_grid, t):
+    l_max = 50 # Chosen max value of l in the infinite series
+    phi_mesh, theta_mesh = np.meshgrid(phi_grid, theta_grid)
+    density = np.zeros_like(theta_mesh)
+    
+    # Calculate summation (total density)
+    for l in range(l_max + 1):
+        density += (
+            (2 * l + 1) * np.exp(-l * (l + 1) * t) * eval_legendre(l, np.cos(theta_mesh))
+        )
+    
+    # Divide sum by 4 pi
+    theoretical_density = density / (4 * np.pi)
+    
+    return theoretical_density

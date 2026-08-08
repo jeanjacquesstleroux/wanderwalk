@@ -194,6 +194,7 @@ class Sphere(Manifold):
         '''
         noise = self.sample_tangent_noise(x)
         noise_scaled = np.sqrt(dt) * noise
-        x += noise_scaled
-        return self.project_to_manifold(x)
+        x_new = x + noise_scaled
+        x_new = x_new / np.linalg.norm(x_new)
+        return self.project_to_manifold(x_new)
         

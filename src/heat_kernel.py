@@ -35,26 +35,33 @@ def estimate_density(samples, time_index):
     
     # Convert (x, y, z) to spherical (rho is already 1, due to unit sphere)
     theta = np.arccos(z)
-    phi = np.atan2(y, x)
+    phi = np.mod(np.atan2(y, x), 2 * np.pi) # Phi between 0 and 2pi, not -pi and pi
     
     # Create meshgrids from theta and phi
     theta_grid = np.linspace(0, np.pi, 50)
     phi_grid = np.linspace(0, 2*np.pi, 50)
-    theta_mesh, phi_mesh = np.meshgrid(theta_grid, phi_grid)
+    theta_mesh, phi_mesh = np.meshgrid(theta_grid, phi_grid, indexing="ij") # Rows theta, cols phi
     
     dtheta = theta_grid[1] - theta_grid[0]
     dphi = phi_grid[1] - phi_grid[0]
     
-    # Store sampled points in spherical coordiantes
-    sampled_points = np.vstack([theta, phi])
+    # Store sampled points in Cartesian coordinates
+    sampled_points = np.vstack([x, y, z])
     
     # Compute KDE on sampled points
     kernel = gaussian_kde(sampled_points)
     
-    # Put each meshgrid on one row and combine into an array of positions
-    positions = np.vstack([theta_mesh.ravel(), phi_mesh.ravel()])
+    # Convert spherical grid points to Cartesian coordinates
+    x_grid = np.sin(theta_mesh) * np.cos(phi_mesh)
+    y_grid = np.sin(theta_mesh) * np.sin(phi_mesh)
+    z_grid = np.cos(theta_mesh)
     
-    # Fit the array into KDE
+    # Transform grid coordinates to positions for KDE
+    positions = np.vstack([x_grid.ravel(),
+                           y_grid.ravel(),
+                           z_grid.ravel()])
+    
+    # Compute KDE at each grid point
     density = kernel(positions)
     
     # Reshape the density to 50x50 grid for plotting

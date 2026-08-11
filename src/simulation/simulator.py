@@ -33,8 +33,7 @@ def simulator(T, N, dt, noise_type, starting_point=None):
         trajectory[t] = points
     return trajectory
 
-# Vectorized simulator for the torus (isotropic noise only - anisotropic
-# noise is not yet implemented for the Torus manifold)
+# Vectorized simulator for the torus
 def torus_simulator(T, N, dt, noise_type, R, r, starting_point=None):
     torus = Torus(R, r)
 

@@ -47,7 +47,6 @@ def torus_simulator(T, N, dt, noise_type, R, r, starting_point=None):
             noise = torus.sample_tangent_noise_multiple(points)
         elif noise_type == "anisotropic":
             noise = torus.sample_tangent_noise_anisotropic_multiple(points)
-        #noise = torus.sample_tangent_noise_multiple(points)
         noise_scaled = np.sqrt(dt) * noise
         points += noise_scaled
         points = torus.project_to_manifold_multiple(points)
@@ -89,7 +88,6 @@ if __name__ == "__main__":
     assert trajectory.shape == (T, N, 3)
     trajectory_two = simulator(T, N, dt, "anisotropic")
     assert trajectory_two.shape == (T, N, 3)
-    #trajectory_three = torus_simulator(T, N, dt, R=3, r=1)
     trajectory_three = torus_simulator(T, N, dt, "isotropic", R=3, r=1)
     assert trajectory_three.shape == (T, N, 3)
     trajectory_four = torus_simulator(T, N, dt, "anisotropic", R=3, r=1)

@@ -67,3 +67,17 @@ Click "Run Simulation" to generate an animated trajectory, the final particle di
 ## Notebooks
 
 The `notebooks/` directory contains the exploratory work behind the library, each one also exported to HTML in the same folder so it can be read without running any code.
+
+## Installing as a Library
+
+For a basic installation (no interactive Streamlit app or visualizations):
+
+```bash
+pip install git+https://github.com/jeanjacquesstleroux/2manifold-brownian-motion.git
+```
+
+For a full installation (with interactive Streamlit app and visualizations):
+
+```bash
+pip install "git+https://github.com[app]"
+```

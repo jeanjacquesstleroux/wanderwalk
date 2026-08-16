@@ -227,6 +227,86 @@ class Torus(Manifold):
 
         return a * e_u + b * e_v
     
+    def sample_tangent_noise_anisotropic(self, x):
+        '''
+        Generated anistropic noise in one tangent direction at point
+        x on the torus.
+        
+        A torus has two orthogonal tangent direction:
+        - The direction around the large circle of the torus (R)
+        - The direction around the smaller circular cross-sections of the 
+        torus (r)
+        
+        The toroidal direction is the motion around the large circle, while
+        the poloidal direction is the motion around the cross-section.
+        
+        A Gaussian random vector is first generated and then multiplied
+        by a scalar value (the noise). This is the random step the point
+        takes on the torus, constrained to one tangent direction.
+        
+        Arguments:
+            x: A point on the torus.
+            
+        Returns:
+            A random vector in R^3 constrained to one tangent direction
+            and at point x on the torus.
+        '''
+        x_coor = x[0]
+        y_coor = x[1]
+        z_coor = x[2]
+        u = math.atan2(y_coor, x_coor)
+        rho = math.sqrt(x_coor**2 + y_coor**2)
+        v = math.atan2(z_coor, rho - self.R)
+        
+        X_u = np.array([
+            -(self.R + self.r * math.cos(v)) * math.sin(u),
+            (self.R + self.r * math.cos(v)) * math.cos(u),
+            0.0
+        ])
+        
+        e_u = X_u / np.linalg.norm(X_u)
+        
+        scalar_noise = np.random.randn()
+        
+        return scalar_noise * e_u
+        
+    
+    def sample_tangent_noise_anisotropic_multiple(self, X):
+        '''
+        Generates anistropic Gaussian noise for many points on
+        the torus.
+        
+        For each point, a scalar Gaussian variable (the noise) is
+        multiplied by one tangent direction (e_u). Here, this is the
+        direction around the large circle of the torus (R).
+        
+        Arguments:
+            X: An (N, 3) array of points on the torus.
+            
+        Returns:
+            An (N, 3) array of random Gaussian tangent vectors.
+        '''
+        x_coor = X[:, 0]
+        y_coor = X[:, 1]
+        z_coor = X[:, 2]
+        
+        u = np.arctan2(y_coor, x_coor)
+        rho = np.sqrt(x_coor**2 + y_coor**2)
+        v = np.arctan2(z_coor, rho - self.R)
+        
+        X_u = np.stack([
+            -(self.R + self.r * np.cos(v)) * np.sin(u),
+            (self.R + self.r * np.cos(v)) * np.cos(u),
+            np.zeros_like(u)
+        ], axis=1)
+        
+        e_u = X_u / np.linalg.norm(X_u, axis=1, keepdims=True)
+        
+        N = X.shape[0]
+        scalar_noise = np.random.randn(N, 1)
+        
+        return scalar_noise * e_u
+    
     def project_to_manifold(self, x):
         '''Projects a point in R^3 onto the torus. The projection is computed 
         analytically rather than numerically. 

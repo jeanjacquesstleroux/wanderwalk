@@ -381,7 +381,7 @@ with st.sidebar:
         value=20
     ))
 
-    noise_options = ["Isotropic", "Anisotropic"] if manifold == "Sphere" else ["Isotropic"]
+    noise_options = ["Isotropic", "Anisotropic"]
     noise_type = with_help("noise_type", lambda: st.selectbox(
         label="Noise Type",
         options=noise_options
@@ -548,7 +548,7 @@ if run_clicked == True:
     if manifold == "Sphere":
         trajectory = simulator(T, N, dt, noise_type.lower(), starting_point=starting_point)
     elif manifold == "Torus":
-        trajectory = torus_simulator(T, N, dt, R, r, starting_point=starting_point)
+        trajectory = torus_simulator(T, N, dt, noise_type.lower(), R, r, starting_point=starting_point)
     else: # Poincare Disk
         trajectory = hyperbolic_simulator(T, N, dt, starting_point=starting_point)
     # Get first particle path

@@ -1,5 +1,14 @@
 .venv/
+venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+
+# Packaging and test artifacts
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/

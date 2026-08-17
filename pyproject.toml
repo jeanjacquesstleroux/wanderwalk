@@ -1,0 +1,95 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wanderwalk"
+dynamic = ["version"]
+description = "Brownian motion on Riemannian 2-manifolds: the sphere, the torus, and the hyperbolic plane"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Jean-Jacques St. Leroux", email = "jjlerouxny@gmail.com" },
+    { name = "Danielle Prilepskiy", email = "danielleprilepskiy@gmail.com" },
+]
+maintainers = [
+    { name = "Jean-Jacques St. Leroux", email = "jjlerouxny@gmail.com" },
+]
+keywords = [
+    "brownian-motion",
+    "diffusion",
+    "differential-geometry",
+    "hyperbolic-geometry",
+    "manifolds",
+    "monte-carlo",
+    "riemannian-geometry",
+    "stochastic-differential-equations",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+    "numpy>=1.21",
+]
+
+[project.optional-dependencies]
+# Interactive Streamlit app, launched by the wanderwalk-app script
+app = [
+    "plotly>=5.0",
+    "streamlit>=1.30",
+]
+# Running the notebooks under notebooks/
+notebooks = [
+    "jupyterlab>=4.0",
+    "matplotlib>=3.5",
+    "plotly>=5.0",
+    "scipy>=1.7",
+]
+test = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+wanderwalk-app = "wanderwalk.app.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jeanjacquesstleroux/wanderwalk"
+Repository = "https://github.com/jeanjacquesstleroux/wanderwalk"
+Issues = "https://github.com/jeanjacquesstleroux/wanderwalk/issues"
+Changelog = "https://github.com/jeanjacquesstleroux/wanderwalk/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/wanderwalk/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wanderwalk"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "/CHANGELOG.md",
+    "/LICENSE",
+    "/README.md",
+    "/pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

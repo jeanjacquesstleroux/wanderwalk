@@ -1,27 +1,69 @@
-from src.manifolds.sphere import Sphere
-from src.manifolds.torus import Torus
-from src.manifolds.hyperbolic import PoincareDisk
+"""Vectorized Euler-Maruyama simulators for Brownian motion on each manifold.
+
+Each simulator advances N independent particles for T time steps at once,
+returning the full trajectory rather than only the final positions, so that
+both the time evolution and the terminal distribution can be inspected.
+
+Reproducibility: these simulators draw from NumPy's global random state via
+``np.random``. Call ``np.random.seed(...)`` before a simulator to obtain a
+repeatable trajectory.
+"""
+
 import numpy as np
 
-# Simulator function for predefined points - for Notebook 2
-def simulator(T, N, dt, noise_type, starting_point=None):
+from ..manifolds.hyperbolic import PoincareDisk
+from ..manifolds.sphere import Sphere
+from ..manifolds.torus import Torus
+
+_SPHERE_NOISE_TYPES = ("isotropic", "anisotropic")
+
+
+def sphere_simulator(T, N, dt, noise_type, starting_point=None):
+    """Simulates Brownian motion for N particles on the unit sphere S^2.
+
+    Arguments:
+        T: Number of time steps to advance.
+        N: Number of independent particles to simulate.
+        dt: Size of each time step.
+        noise_type: Either "isotropic" (motion in all tangent directions) or
+            "anisotropic" (motion constrained to a single tangent direction).
+        starting_point: Optional point in R^3 for every particle to start
+            from. It is projected onto the sphere first, so it need not be
+            normalized. Defaults to (1, 0, 0).
+
+    Returns:
+        A (T, N, 3) array of particle positions, where entry [t] holds the
+        positions of all N particles after time step t.
+
+    Raises:
+        ValueError: If noise_type is not one of the two supported values.
+    """
+    if noise_type not in _SPHERE_NOISE_TYPES:
+        raise ValueError(
+            f"noise_type must be one of {_SPHERE_NOISE_TYPES}, got {noise_type!r}"
+        )
+
     # Initialize a sphere object
     sphere = Sphere()
-    
+
     # Initialize N particles at a point on the sphere
     if starting_point is None:
         points = np.tile([1.0, 0.0, 0.0], (N, 1))
     else:
-        starting_point = sphere.project_to_manifold(starting_point) # Avoid floating point errors, ensure point is on sphere
+        # Avoid floating point errors, ensure point is on sphere
+        starting_point = sphere.project_to_manifold(
+            np.asarray(starting_point, dtype=float)
+        )
         points = np.tile(starting_point, (N, 1))
-    # Initialize the trajectory to an empty array to later store the new poisitions of each point in points
+    # Initialize the trajectory to an empty array to later store the new
+    # positions of each point in points
     trajectory = np.zeros((T, N, 3))
-        
+
     # Go through each time step
     for t in range(T):
         if noise_type == "isotropic":
             noise = sphere.sample_tangent_noise_multiple(points)
-        elif noise_type == "anisotropic":
+        else:
             noise = sphere.sample_tangent_noise_anisotropic_multiple(points)
         # Scale the noise by square root of dt
         noise_scaled = np.sqrt(dt) * noise
@@ -33,14 +75,31 @@ def simulator(T, N, dt, noise_type, starting_point=None):
         trajectory[t] = points
     return trajectory
 
-# Vectorized simulator for the torus (isotropic noise only - anisotropic
-# noise is not yet implemented for the Torus manifold)
+
 def torus_simulator(T, N, dt, R, r, starting_point=None):
+    """Simulates Brownian motion for N particles on the torus T^2.
+
+    Only isotropic noise is supported, since anisotropic noise is not
+    implemented for the Torus manifold.
+
+    Arguments:
+        T: Number of time steps to advance.
+        N: Number of independent particles to simulate.
+        dt: Size of each time step.
+        R: Major radius, from the center of the hole to the center of the tube.
+        r: Minor radius, the radius of the tube.
+        starting_point: Optional point in R^3 on the torus for every particle
+            to start from. Defaults to the point at toroidal and poloidal
+            angles (0, 0).
+
+    Returns:
+        A (T, N, 3) array of particle positions.
+    """
     torus = Torus(R, r)
 
     if starting_point is None:
         starting_point = torus.parametrize(0.0, 0.0)
-    points = np.tile(starting_point, (N, 1))
+    points = np.tile(np.asarray(starting_point, dtype=float), (N, 1))
     trajectory = np.zeros((T, N, 3))
 
     for t in range(T):
@@ -52,19 +111,35 @@ def torus_simulator(T, N, dt, R, r, starting_point=None):
     return trajectory
 
 
-# Vectorized simulator for the Poincare disk (H^2). Unlike the sphere and
-# torus simulators, trajectories here have shape (T, N, 2), not (T, N, 3):
-# H^2 has no isometric embedding into R^3 (Hilbert's theorem), so points are
-# genuine 2D vectors in the disk rather than 3D ambient points constrained
-# to a surface. See src/manifolds/hyperbolic.py and
-# docs/writeups/2-poincare-disk-derivation.md.
 def hyperbolic_simulator(T, N, dt, starting_point=None):
+    """Simulates Brownian motion for N particles on the hyperbolic plane H^2.
+
+    Unlike the sphere and torus simulators, trajectories here have shape
+    (T, N, 2), not (T, N, 3): H^2 has no isometric embedding into R^3
+    (Hilbert's theorem), so points are genuine 2D vectors in the Poincare
+    disk rather than 3D ambient points constrained to a surface. See
+    :class:`wanderwalk.manifolds.PoincareDisk` and
+    docs/writeups/2-poincare-disk-derivation.md.
+
+    Arguments:
+        T: Number of time steps to advance.
+        N: Number of independent particles to simulate.
+        dt: Size of each time step.
+        starting_point: Optional point in the open unit disk for every
+            particle to start from. It is clamped inside the disk first.
+            Defaults to the origin.
+
+    Returns:
+        A (T, N, 2) array of particle positions in the Poincare disk.
+    """
     disk = PoincareDisk()
 
     if starting_point is None:
         starting_point = np.array([0.0, 0.0])
     else:
-        starting_point = disk.project_to_manifold(np.asarray(starting_point, dtype=float))
+        starting_point = disk.project_to_manifold(
+            np.asarray(starting_point, dtype=float)
+        )
     points = np.tile(starting_point, (N, 1))
     trajectory = np.zeros((T, N, 2))
 
@@ -75,19 +150,3 @@ def hyperbolic_simulator(T, N, dt, starting_point=None):
         points = disk.project_to_manifold_multiple(points)
         trajectory[t] = points
     return trajectory
-
-
-if __name__ == "__main__":
-    # Verify that shape of trajectory is (T, N, 3)
-    T = 200
-    N = 100
-    dt = 0.01
-    trajectory = simulator(T, N, dt, "isotropic")
-    assert trajectory.shape == (T, N, 3)
-    trajectory_two = simulator(T, N, dt, "anisotropic")
-    assert trajectory_two.shape == (T, N, 3)
-    trajectory_three = torus_simulator(T, N, dt, R=3, r=1)
-    assert trajectory_three.shape == (T, N, 3)
-    # Verify that shape of the hyperbolic trajectory is (T, N, 2)
-    trajectory_four = hyperbolic_simulator(T, N, dt)
-    assert trajectory_four.shape == (T, N, 2)

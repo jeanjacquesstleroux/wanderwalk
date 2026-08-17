@@ -1,15 +1,16 @@
-import streamlit as st
-import numpy as np
-import plotly.graph_objects as go
 import math
 
-import sys
-sys.path.append("..")
-from src.manifolds.sphere import Sphere
-from src.manifolds.torus import Torus
-from src.simulation.simulator import simulator, torus_simulator, hyperbolic_simulator
-from src.visualization.kde import sphere_kde
-from src.visualization.hyperbolic_kde import disk_kde, boundary_angle_histogram
+import numpy as np
+import plotly.graph_objects as go
+import streamlit as st
+
+from wanderwalk.manifolds import Torus
+from wanderwalk.simulation import (
+    hyperbolic_simulator,
+    sphere_simulator,
+    torus_simulator,
+)
+from wanderwalk.visualization import boundary_angle_histogram, disk_kde, sphere_kde
 
 # Explanatory content shown in each parameter's help modal: the equation it
 # appears in (LaTeX, or None if it isn't part of an equation) and a
@@ -546,7 +547,7 @@ if run_clicked == True:
     cols2[2].markdown(f"**Starting Point**  \n{start_label}")
     # Run simulation on the selected manifold
     if manifold == "Sphere":
-        trajectory = simulator(T, N, dt, noise_type.lower(), starting_point=starting_point)
+        trajectory = sphere_simulator(T, N, dt, noise_type.lower(), starting_point=starting_point)
     elif manifold == "Torus":
         trajectory = torus_simulator(T, N, dt, R, r, starting_point=starting_point)
     else: # Poincare Disk

@@ -369,7 +369,7 @@ On $\mathbb{R}^n$, the Laplacian $\Delta f = \sum \partial^2 f/\partial x_i^2$ g
 
 **Why the Projection Scheme Implements Stratonovich**
 - [ ] The Euler-Maruyama scheme for the Stratonovich SDE $dX = \sigma(X) \circ dW$: $X_{n+1} = X_n + \sigma(X_n) \Delta W_n + \tfrac{1}{2} \sum_j (\partial\sigma_{ij}/\partial x_k\, \sigma_{kj})(X_n) \Delta t + O(\Delta t^{3/2})$
-- [ ] The projection scheme: $\tilde{X}_{n+1} = X_n + \sqrt{\Delta t} \cdot P_{X_n}(Z_n)$, then $X_{n+1} = \tilde{X}_{n+1}/|\tilde{X}_{n+1}|$ (for sphere)
+- [ ] Understand how projection is used: $\tilde{X}_{n+1} = X_n + \sqrt{\Delta t} \cdot P_{X_n}(Z_n)$, then $X_{n+1} = \tilde{X}_{n+1}/|\tilde{X}_{n+1}|$ (for sphere)
 - [ ] Show: to first order in $\Delta t$, $X_{n+1} = X_n + P_{X_n}(\sqrt{\Delta t}\, Z_n) - \tfrac{1}{2} (X_n \cdot (\sqrt{\Delta t}\, Z_n)^2) X_n + O(\Delta t^{3/2})$. The second term contributes an $O(\Delta t)$ drift. Compute its expectation: $E[\tfrac{1}{2} (X_n \cdot \sqrt{\Delta t}\, Z_n)^2 X_n] = \tfrac{1}{2} \Delta t \cdot E[Z^T P_X Z] X_n = \tfrac{1}{2} \Delta t (n-1) X_n\, dt$ where $n-1 = 2$ for $S^2 \subset \mathbb{R}^3$. This is exactly the Itô-Stratonovich correction, so the scheme is consistent with the Stratonovich formulation.
 - [ ] **Conclusion to write in notes**: the re-normalization after each step automatically incorporates the Itô correction, so the projection scheme implements Stratonovich EM without any extra drift term needing to be computed explicitly.
 

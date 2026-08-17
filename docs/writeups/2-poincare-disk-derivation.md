@@ -1,5 +1,5 @@
 # The Poincaré Disk: SDE Derivation
-### Purpose: derive the stochastic differential equation governing Brownian motion on $H^2$ in the Poincaré disk model so that every formula used in `src/manifolds/hyperbolic.py` traces back to a step here.
+### Purpose: derive the stochastic differential equation governing Brownian motion on $H^2$ in the Poincaré disk model so that every formula used in `src/wanderwalk/manifolds/hyperbolic.py` traces back to a step here.
 
 ---
 
@@ -188,7 +188,7 @@ This is an analogue of the Legendre-series heat kernel used to validate the Sphe
 
 ---
 
-## 9. Summary of formulas used in `src/manifolds/hyperbolic.py`
+## 9. Summary of formulas used in `src/wanderwalk/manifolds/hyperbolic.py`
 
 | Quantity | Formula | Source |
 |---|---|---|

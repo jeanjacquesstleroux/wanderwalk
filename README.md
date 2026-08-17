@@ -1,6 +1,19 @@
-# Brownian Motion on Manifolds
+# wanderwalk: Brownian Motion on Manifolds
 
 This project simulates Brownian motion on Riemannian manifolds. It pairs a small, testable Python library for running these simulations with an interactive Streamlit app for watching the diffusion unfold in real time.
+
+```bash
+pip install wanderwalk
+```
+
+```python
+import numpy as np
+from wanderwalk import sphere_simulator
+
+np.random.seed(0)
+trajectory = sphere_simulator(T=200, N=500, dt=0.01, noise_type="isotropic")
+final_positions = trajectory[-1]        # (500, 3), every point on the sphere
+```
 
 ## What This Project Is About
 
@@ -18,7 +31,7 @@ For the full motivation, mathematical background, and the theory connecting this
 
 ## How the Simulation Works
 
-Each manifold is represented by a small class (`src/manifolds/sphere.py`, `src/manifolds/torus.py`, `src/manifolds/hyperbolic.py`) implementing a shared interface (`src/manifolds/base.py`):
+Each manifold is represented by a small class (`src/wanderwalk/manifolds/sphere.py`, `src/wanderwalk/manifolds/torus.py`, `src/wanderwalk/manifolds/hyperbolic.py`) implementing a shared interface (`src/wanderwalk/manifolds/base.py`):
 
 - `sample_tangent_noise`: generates a random vector constrained to the tangent plane at a point, so a step never points off the surface.
 - `euler_maruyama_step`: advances a point one time step using the Euler-Maruyama method, the standard numerical scheme for stochastic differential equations.
@@ -26,33 +39,95 @@ Each manifold is represented by a small class (`src/manifolds/sphere.py`, `src/m
 
 For the Sphere and Torus, this is the *projection method*: propose a step in the tangent plane, take it, then project back onto the surface -- both are embedded in R³, so ambient Euclidean lengths agree with the surface's own metric. The Poincaré disk has no such embedding (Hilbert's theorem), so it is handled intrinsically instead: points are 2D vectors in the open unit disk, `sample_tangent_noise` rescales an isotropic Gaussian by the disk's own conformal factor rather than projecting an ambient vector, and `project_to_manifold` is a numerical safety clamp rather than an exact geometric projection (see the derivation doc for why).
 
-Running this update for many particles at once (vectorized with NumPy) is handled by `src/simulation/simulator.py`, and the resulting particle distributions are visualized with a kernel density estimate in `src/visualization/kde.py` (sphere) and `src/visualization/hyperbolic_kde.py` (Poincaré disk, using the exact hyperbolic geodesic distance as the kernel). The geometry, the simulation loop, and the visualization are kept in separate modules, so adding a new surface mostly requires implementing its geometry, without changes to the simulator's vectorized-loop pattern.
+Running this update for many particles at once (vectorized with NumPy) is handled by `src/wanderwalk/simulation/simulator.py`, and the resulting particle distributions are visualized with a kernel density estimate in `src/wanderwalk/visualization/kde.py` (sphere) and `src/wanderwalk/visualization/hyperbolic_kde.py` (Poincaré disk, using the exact hyperbolic geodesic distance as the kernel). The geometry, the simulation loop, and the visualization are kept in separate modules, so adding a new surface mostly requires implementing its geometry, without changes to the simulator's vectorized-loop pattern.
+
+## Installation
+
+The core library depends only on NumPy:
+
+```bash
+pip install wanderwalk
+```
+
+The Streamlit app is optional, since it pulls in Streamlit and Plotly:
+
+```bash
+pip install wanderwalk[app]
+```
+
+Requires Python 3.9 or newer.
+
+## Library Usage
+
+The three simulators each return a trajectory array of shape `(T, N, d)`, holding the positions of all `N` particles at each of the `T` time steps. The sphere and torus live in R^3 so `d` is 3; the Poincaré disk is intrinsically two-dimensional so `d` is 2.
+
+```python
+import numpy as np
+from wanderwalk import sphere_simulator, torus_simulator, hyperbolic_simulator
+
+np.random.seed(0)                                     # for a repeatable run
+
+on_sphere = sphere_simulator(T=200, N=500, dt=0.01, noise_type="isotropic")
+on_torus = torus_simulator(T=200, N=500, dt=0.01, R=3.0, r=1.0)
+in_disk = hyperbolic_simulator(T=200, N=500, dt=0.01)
+
+on_sphere.shape, in_disk.shape                        # ((200, 500, 3), (200, 500, 2))
+```
+
+The manifold classes can also be driven directly, one step at a time:
+
+```python
+from wanderwalk import Sphere, Torus, PoincareDisk
+
+sphere = Sphere()
+point = np.array([1.0, 0.0, 0.0])
+for _ in range(100):
+    point = sphere.euler_maruyama_step(point, dt=0.01)   # stays on the sphere
+
+disk = PoincareDisk()
+disk.geodesic_distance_from_origin(np.array([0.6, 0.0]))  # hyperbolic distance
+```
+
+And the density estimators turn final positions into a heatmap:
+
+```python
+from wanderwalk import sphere_kde, disk_kde, boundary_angle_histogram
+
+density = disk_kde(in_disk[-1], x_mesh, y_mesh, N=500)
+counts, edges = boundary_angle_histogram(in_disk[-1], radius_threshold=0.9)
+```
 
 ## Project Layout
 
 ```
-app/                   Streamlit application
-src/manifolds/         Sphere, torus, and Poincare disk geometry (tangent projection/noise, stepping)
-src/simulation/        Vectorized Euler-Maruyama simulators
-src/visualization/     Kernel density estimation for particle distributions
-notebooks/             Jupyter notebooks (also exported to HTML for viewing without running code)
-docs/writeups/         Mathematical background, the differential geometry curriculum, and the
-                        Poincare disk SDE derivation
-ONBOARDING.md          Motivation, theory, and project background
+src/wanderwalk/manifolds/       Sphere, torus, and Poincare disk geometry (tangent
+                                 projection/noise, stepping)
+src/wanderwalk/simulation/      Vectorized Euler-Maruyama simulators
+src/wanderwalk/visualization/   Kernel density estimation for particle distributions
+src/wanderwalk/app/             Streamlit application and its launcher
+tests/                          Test suite
+notebooks/                      Jupyter notebooks (also exported to HTML for viewing
+                                 without running code)
+docs/writeups/                  Mathematical background, the differential geometry
+                                 curriculum, and the Poincare disk SDE derivation
+ONBOARDING.md                   Motivation, theory, and project background
 ```
 
-## Requirements
+## Development
 
-- Python 3.x
-- Dependencies listed in `requirements.txt`, most notably `numpy`, `streamlit`, and `plotly`
+```bash
+git clone https://github.com/jeanjacquesstleroux/wanderwalk.git
+cd wanderwalk
+pip install -r requirements.txt     # editable install with all extras
+pytest
+```
 
 ## Starting the App
 
-From the project root (`2manifold-brownian-motion/`):
+Once the `app` extra is installed, launch it with the bundled console script:
 
 ```bash
-pip install -r requirements.txt
-streamlit run app/app.py
+wanderwalk-app
 ```
 
 This opens the app in your browser. From the sidebar you can:
@@ -66,4 +141,18 @@ Click "Run Simulation" to generate an animated trajectory, the final particle di
 
 ## Notebooks
 
-The `notebooks/` directory contains the exploratory work behind the library, each one also exported to HTML in the same folder so it can be read without running any code.
+The `notebooks/` directory contains the exploratory work behind the library, each one also exported to HTML in the same folder so it can be read without running any code. To run them yourself, install the notebook extra:
+
+```bash
+pip install wanderwalk[notebooks]
+jupyter lab notebooks/
+```
+
+## Authors
+
+- Jean-Jacques St. Leroux
+- Danielle Prilepskiy
+
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE).

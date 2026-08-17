@@ -85,9 +85,84 @@ class Torus(Manifold):
         normal_vector = np.array([x, y, z])
         return normal_vector
     
-    def project_to_tangent(self, u, v, vector):
-        """Projects a vector onto the tangent plane of the torus. This 
-        is done by removing the normal component of the vector and only 
+    def angles_from_point(self, x):
+        """Recovers the angles (u, v) from a Cartesian point. Inverse of
+        parametrize.
+
+        Arguments:
+            x: A point on the torus in R^3.
+
+        Returns:
+            A tuple (u, v) of the toroidal and poloidal angles of x.
+        """
+        x_coor = x[0]
+        y_coor = x[1]
+        z_coor = x[2]
+        u = math.atan2(y_coor, x_coor)
+        rho = math.sqrt(x_coor**2 + y_coor**2)
+        v = math.atan2(z_coor, rho - self.R)
+        return u, v
+
+    def angles_from_points(self, X):
+        """Vectorized version of angles_from_point for many points at once.
+
+        Arguments:
+            X: An (N, 3) array of points on the torus.
+
+        Returns:
+            A tuple (u, v) of (N,) arrays holding the toroidal and poloidal
+            angles of each point in X.
+        """
+        x_coor = X[:, 0]
+        y_coor = X[:, 1]
+        z_coor = X[:, 2]
+        u = np.arctan2(y_coor, x_coor)
+        rho = np.sqrt(x_coor**2 + y_coor**2)
+        v = np.arctan2(z_coor, rho - self.R)
+        return u, v
+
+    def project_to_tangent(self, x, v):
+        """Projects a vector v onto the tangent plane at a point x on the torus.
+
+        Takes a Cartesian point, matching the signature shared by every
+        manifold. Recovers the angles from x, then defers to
+        project_to_tangent_at_angles.
+
+        Arguments:
+            x: A point on the torus in R^3.
+            v: An arbitrary vector in R^3 at point x.
+
+        Returns:
+            The component of v which lies in the tangent plane at x.
+        """
+        u_angle, v_angle = self.angles_from_point(x)
+        return self.project_to_tangent_at_angles(u_angle, v_angle, v)
+
+    def project_to_tangent_multiple(self, X, V):
+        """Vectorized version of project_to_tangent for many points at once.
+
+        Arguments:
+            X: An (N, 3) array of points on the torus.
+            V: An (N, 3) array of vectors, one per point in X.
+
+        Returns:
+            An (N, 3) array holding the tangential component of each vector
+            in V at its corresponding point in X.
+        """
+        u_angles, v_angles = self.angles_from_points(X)
+
+        normals = np.stack([
+            np.cos(u_angles) * np.cos(v_angles),
+            np.sin(u_angles) * np.cos(v_angles),
+            np.sin(v_angles)
+        ], axis=1)
+
+        normal_components = np.sum(V * normals, axis=1, keepdims=True)
+        return V - normal_components * normals
+
+    def project_to_tangent_at_angles(self, u, v, vector):
+        """Projects a vector onto the tangent plane of the torus. This
+        is done by removing the normal component of the vector and only
         leaving the tangential component.
         
         The dot product of the vector and the unit normal vector measures 
@@ -147,13 +222,7 @@ class Torus(Manifold):
         Returns:
             An (N, 3) array of random tangent vectors, one per input point.
         '''
-        x_coor = X[:, 0]
-        y_coor = X[:, 1]
-        z_coor = X[:, 2]
-
-        u = np.arctan2(y_coor, x_coor)
-        rho = np.sqrt(x_coor**2 + y_coor**2)
-        v = np.arctan2(z_coor, rho - self.R)
+        u, v = self.angles_from_points(X)
 
         X_u = np.stack([
             -(self.R + self.r * np.cos(v)) * np.sin(u),
@@ -200,13 +269,8 @@ class Torus(Manifold):
             A random vector in R^3 which is on the tangent space at point 
             x on the torus.
         '''
-        x_coor = x[0]
-        y_coor = x[1]
-        z_coor = x[2]
-        u = math.atan2(y_coor, x_coor)
-        rho = math.sqrt(x_coor**2 + y_coor**2)
-        v = math.atan2(z_coor, rho - self.R)
-        
+        u, v = self.angles_from_point(x)
+
         X_u = np.array([
             -(self.R + self.r * np.cos(v)) * np.sin(u),
             (self.R + self.r * np.cos(v)) * np.cos(u),

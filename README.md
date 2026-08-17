@@ -1,4 +1,5 @@
 # wanderwalk: Brownian Motion on Manifolds
+## Version 1.0.0
 
 This project simulates Brownian motion on Riemannian manifolds. It pairs a small, testable Python library for running these simulations with an interactive Streamlit app for watching the diffusion unfold in real time.
 

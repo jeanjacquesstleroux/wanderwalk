@@ -27,7 +27,7 @@ For the full motivation, mathematical background, and the theory connecting this
 
 - **Sphere (S²)**: positively curved, particle paths are recurrent, and the particle distribution converges to uniform over the surface.
 - **Torus (T²)**: zero average curvature but non-trivial global topology; particles wrap around the surface rather than escaping it.
-- **Hyperbolic plane (H²)**: represented via the Poincaré disk model. Its constant negative curvature makes random paths transient -- rather than equilibrating to a uniform distribution, particle paths converge almost surely to a random point on the boundary circle (the Poisson boundary). See `docs/writeups/2-poincare-disk-derivation.md` for the full derivation of the governing SDE from this project's own conventions, and `notebooks/Notebook-04.ipynb` for its validation.
+- **Hyperbolic plane (H²)**: represented via the Poincaré disk model. Its constant negative curvature makes random paths transient -- rather than equilibrating to a uniform distribution, particle paths converge almost surely to a random point on the boundary circle (the Poisson boundary). See `docs/writeups/2-poincare-disk-derivation.md` for the full derivation of the governing SDE from this project's own conventions, and `notebooks/Notebook-05.ipynb` for its validation.
 
 ## How the Simulation Works
 
@@ -134,7 +134,7 @@ This opens the app in your browser. From the sidebar you can:
 
 - Choose the manifold (sphere, torus, or Poincaré disk).
 - Set the number of particles, number of time steps, and the size of each time step.
-- Choose isotropic noise (motion in all tangent directions) or, for the sphere only, anisotropic noise (motion constrained to a single tangent direction).
+- Choose isotropic noise (motion in all tangent directions) or, for the sphere and the torus, anisotropic noise (motion constrained to a single tangent direction).
 - Set the starting point (latitude and longitude for the sphere, the toroidal and poloidal angles for the torus, or the radius and angle for the Poincaré disk) and, for the torus, its major and minor radius.
 
 Click "Run Simulation" to generate an animated trajectory, the final particle distribution, and a density heatmap of where the particles ended up.

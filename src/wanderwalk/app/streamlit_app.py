@@ -63,8 +63,8 @@ PARAM_HELP = {
         "explanation": (
             "Isotropic noise samples a full Gaussian vector and projects it onto the tangent "
             "plane, so a particle can move in any tangent direction. Anisotropic noise (sphere "
-            "only) instead scales a single fixed tangent direction by one scalar Gaussian, so "
-            "motion is restricted to that one direction."
+            "and torus) instead scales a single fixed tangent direction by one scalar Gaussian, "
+            "so motion is restricted to that one direction."
         ),
     },
     "lat_long": {
@@ -382,7 +382,7 @@ with st.sidebar:
         value=20
     ))
 
-    noise_options = ["Isotropic", "Anisotropic"] if manifold == "Sphere" else ["Isotropic"]
+    noise_options = ["Isotropic", "Anisotropic"]
     noise_type = with_help("noise_type", lambda: st.selectbox(
         label="Noise Type",
         options=noise_options
@@ -484,7 +484,7 @@ This project simulates Brownian motion on a Riemannian manifold.
 Brownian motion is the random evolution of particles over time. It is simulated using the Euler-Maruyama method for stochastic differential equations.
 Two types of noise are supported:
 - Isotropic noise allows motion in all tangent directions, uniformly.
-- Anisotropic noise restricts motion to only one tangent direction, producing structured trajectories (currently only implemented for the sphere).
+- Anisotropic noise restricts motion to only one tangent direction, producing structured trajectories (implemented for the sphere and the torus).
 
 Animation and visualizations are provided below, with these features:
 - Red dot to display the initial position of particles on the manifold.
@@ -549,7 +549,7 @@ if run_clicked == True:
     if manifold == "Sphere":
         trajectory = sphere_simulator(T, N, dt, noise_type.lower(), starting_point=starting_point)
     elif manifold == "Torus":
-        trajectory = torus_simulator(T, N, dt, R, r, starting_point=starting_point)
+        trajectory = torus_simulator(T, N, dt, R, r, noise_type=noise_type.lower(), starting_point=starting_point)
     else: # Poincare Disk
         trajectory = hyperbolic_simulator(T, N, dt, starting_point=starting_point)
     # Get first particle path

@@ -15,7 +15,7 @@ from ..manifolds.hyperbolic import PoincareDisk
 from ..manifolds.sphere import Sphere
 from ..manifolds.torus import Torus
 
-_SPHERE_NOISE_TYPES = ("isotropic", "anisotropic")
+_NOISE_TYPES = ("isotropic", "anisotropic")
 
 
 def sphere_simulator(T, N, dt, noise_type, starting_point=None):
@@ -38,9 +38,9 @@ def sphere_simulator(T, N, dt, noise_type, starting_point=None):
     Raises:
         ValueError: If noise_type is not one of the two supported values.
     """
-    if noise_type not in _SPHERE_NOISE_TYPES:
+    if noise_type not in _NOISE_TYPES:
         raise ValueError(
-            f"noise_type must be one of {_SPHERE_NOISE_TYPES}, got {noise_type!r}"
+            f"noise_type must be one of {_NOISE_TYPES}, got {noise_type!r}"
         )
 
     # Initialize a sphere object
@@ -76,11 +76,8 @@ def sphere_simulator(T, N, dt, noise_type, starting_point=None):
     return trajectory
 
 
-def torus_simulator(T, N, dt, R, r, starting_point=None):
+def torus_simulator(T, N, dt, R, r, noise_type="isotropic", starting_point=None):
     """Simulates Brownian motion for N particles on the torus T^2.
-
-    Only isotropic noise is supported, since anisotropic noise is not
-    implemented for the Torus manifold.
 
     Arguments:
         T: Number of time steps to advance.
@@ -88,13 +85,24 @@ def torus_simulator(T, N, dt, R, r, starting_point=None):
         dt: Size of each time step.
         R: Major radius, from the center of the hole to the center of the tube.
         r: Minor radius, the radius of the tube.
+        noise_type: Either "isotropic" (motion in all tangent directions) or
+            "anisotropic" (motion constrained to e_u, the direction around the
+            central axis). Defaults to "isotropic".
         starting_point: Optional point in R^3 on the torus for every particle
             to start from. Defaults to the point at toroidal and poloidal
             angles (0, 0).
 
     Returns:
         A (T, N, 3) array of particle positions.
+
+    Raises:
+        ValueError: If noise_type is not one of the two supported values.
     """
+    if noise_type not in _NOISE_TYPES:
+        raise ValueError(
+            f"noise_type must be one of {_NOISE_TYPES}, got {noise_type!r}"
+        )
+
     torus = Torus(R, r)
 
     if starting_point is None:
@@ -103,7 +111,10 @@ def torus_simulator(T, N, dt, R, r, starting_point=None):
     trajectory = np.zeros((T, N, 3))
 
     for t in range(T):
-        noise = torus.sample_tangent_noise_multiple(points)
+        if noise_type == "isotropic":
+            noise = torus.sample_tangent_noise_multiple(points)
+        else:
+            noise = torus.sample_tangent_noise_anisotropic_multiple(points)
         noise_scaled = np.sqrt(dt) * noise
         points = points + noise_scaled
         points = torus.project_to_manifold_multiple(points)

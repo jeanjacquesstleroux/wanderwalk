@@ -6,6 +6,26 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `Torus.sample_tangent_noise_anisotropic` and
+  `Torus.sample_tangent_noise_anisotropic_multiple`, which restrict noise to
+  `e_u`, the tangent direction around the torus's central axis.
+- `wanderwalk.heat_kernel`, comparing the empirical heat kernel on `S^2`
+  (kernel density estimate over many simulated paths, normalized by the
+  spherical area element) against the Legendre spectral expansion. It needs
+  SciPy, so it is not re-exported at the top level and must be imported as
+  `from wanderwalk.heat_kernel import ...`.
+- `notebooks/Notebook-04.ipynb`, validating that empirical heat kernel against
+  the theoretical one. The Poincaré disk notebook it displaces is now
+  `notebooks/Notebook-05.ipynb`.
+
+### Changed
+
+- `torus_simulator` accepts `noise_type`, defaulting to `"isotropic"`, and
+  raises `ValueError` on an unrecognized value. It is keyword-friendly and
+  placed after `R` and `r`, so existing positional calls keep working.
+
 ## [0.1.0] - 2026-08-17
 
 First packaged release. The simulation code existed beforehand as a set of

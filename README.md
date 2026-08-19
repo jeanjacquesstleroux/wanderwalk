@@ -1,8 +1,17 @@
-# wanderwalk: Brownian Motion on Manifolds
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jeanjacquesstleroux/wanderwalk/main/docs/assets/wanderwalk-logo.png" alt="wanderwalk" width="280">
+</p>
 
-[![PyPI](https://img.shields.io/pypi/v/wanderwalk)](https://pypi.org/project/wanderwalk/)
-[![Python versions](https://img.shields.io/pypi/pyversions/wanderwalk)](https://pypi.org/project/wanderwalk/)
-[![License](https://img.shields.io/pypi/l/wanderwalk)](LICENSE)
+<h1 align="center">wanderwalk</h1>
+
+<p align="center">Brownian motion on Riemannian manifolds</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/wanderwalk/"><img src="https://img.shields.io/badge/version-0.2.0-5e35b1" alt="version 0.2.0"></a>
+  <a href="https://pypi.org/project/wanderwalk/"><img src="https://img.shields.io/badge/python-3.9%2B-blue" alt="Python 3.9 and newer"></a>
+  <a href="https://github.com/jeanjacquesstleroux/wanderwalk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
+  <a href="https://jeanjacquesstleroux.github.io/wanderwalk/"><img src="https://img.shields.io/badge/docs-github.io-purple" alt="Documentation"></a>
+</p>
 
 This project simulates Brownian motion on Riemannian manifolds. It pairs a small, testable Python library for running these simulations with an interactive Streamlit app for watching the diffusion unfold in real time.
 
@@ -28,7 +37,7 @@ Brownian motion is the random, erratic motion first observed in pollen grains su
 
 The question this project explores is what happens to that random motion when the space it lives in is curved. A particle wandering on the surface of a sphere behaves differently from one wandering on a flat plane or on the surface of a donut (a torus): the curvature of the space bends and constrains the motion. This project builds simulations of that behavior and visualizes it directly.
 
-For the full motivation, mathematical background, and the theory connecting this project to diffusion models and quantitative finance, see [ONBOARDING.md](ONBOARDING.md). 
+For the full motivation, mathematical background, and the theory connecting this project to diffusion models and quantitative finance, see [ONBOARDING.md](https://github.com/jeanjacquesstleroux/wanderwalk/blob/main/ONBOARDING.md). 
 
 ## Surfaces Implemented
 
@@ -169,4 +178,4 @@ jupyter lab notebooks/
 
 ## License
 
-Released under the MIT License. See [LICENSE](LICENSE).
+Released under the MIT License. See [LICENSE](https://github.com/jeanjacquesstleroux/wanderwalk/blob/main/LICENSE).

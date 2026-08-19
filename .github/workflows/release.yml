@@ -1,0 +1,87 @@
+name: release
+
+# Publishing uses PyPI Trusted Publishing (OIDC): no API token is stored in
+# this repository. The publisher must be configured once on PyPI, under
+# Publishing, naming this repository and this workflow file, with the
+# environment below.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to publish
+        required: true
+        default: testpypi
+        type: choice
+        options: [testpypi, pypi]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install the build tooling
+        run: python -m pip install --upgrade pip build twine
+
+      - name: Build the wheel and sdist
+        run: python -m build
+
+      - name: Check the metadata renders on PyPI
+        run: twine check --strict dist/*
+
+      - name: Confirm the built version matches the tag
+        if: github.event_name == 'release'
+        run: |
+          version=$(python -c "import re,pathlib; print(re.search(r'__version__ = \"([^\"]+)\"', pathlib.Path('src/wanderwalk/__init__.py').read_text()).group(1))")
+          tag=${GITHUB_REF_NAME#v}
+          echo "package version: $version"
+          echo "release tag:     $tag"
+          test "$version" = "$tag"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+  testpypi:
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/wanderwalk
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  pypi:
+    needs: build
+    if: github.event_name == 'release' || inputs.target == 'pypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/wanderwalk
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+      - uses: pypa/gh-action-pypi-publish@release/v1

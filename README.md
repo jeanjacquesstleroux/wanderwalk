@@ -1,5 +1,8 @@
 # wanderwalk: Brownian Motion on Manifolds
-## Version 1.0.0
+
+[![PyPI](https://img.shields.io/pypi/v/wanderwalk)](https://pypi.org/project/wanderwalk/)
+[![Python versions](https://img.shields.io/pypi/pyversions/wanderwalk)](https://pypi.org/project/wanderwalk/)
+[![License](https://img.shields.io/pypi/l/wanderwalk)](LICENSE)
 
 This project simulates Brownian motion on Riemannian manifolds. It pairs a small, testable Python library for running these simulations with an interactive Streamlit app for watching the diffusion unfold in real time.
 
@@ -9,12 +12,15 @@ pip install wanderwalk
 
 ```python
 import numpy as np
-from wanderwalk import sphere_simulator
+import wanderwalk as ww
 
 np.random.seed(0)
-trajectory = sphere_simulator(T=200, N=500, dt=0.01, noise_type="isotropic")
+trajectory = ww.sphere_simulator(T=200, N=500, dt=0.01, noise_type="isotropic")
 final_positions = trajectory[-1]        # (500, 3), every point on the sphere
 ```
+
+Full documentation, including six tutorials and a generated API reference,
+is at [jeanjacquesstleroux.github.io/wanderwalk](https://jeanjacquesstleroux.github.io/wanderwalk/).
 
 ## What This Project Is About
 
@@ -62,15 +68,18 @@ Requires Python 3.9 or newer.
 
 The three simulators each return a trajectory array of shape `(T, N, d)`, holding the positions of all `N` particles at each of the `T` time steps. The sphere and torus live in R^3 so `d` is 3; the Poincaré disk is intrinsically two-dimensional so `d` is 2.
 
+The library is conventionally imported under the alias `ww`, the way NumPy is
+imported as `np`. Every example in the documentation uses that convention.
+
 ```python
 import numpy as np
-from wanderwalk import sphere_simulator, torus_simulator, hyperbolic_simulator
+import wanderwalk as ww
 
 np.random.seed(0)                                     # for a repeatable run
 
-on_sphere = sphere_simulator(T=200, N=500, dt=0.01, noise_type="isotropic")
-on_torus = torus_simulator(T=200, N=500, dt=0.01, R=3.0, r=1.0)
-in_disk = hyperbolic_simulator(T=200, N=500, dt=0.01)
+on_sphere = ww.sphere_simulator(T=200, N=500, dt=0.01, noise_type="isotropic")
+on_torus = ww.torus_simulator(T=200, N=500, dt=0.01, R=3.0, r=1.0)
+in_disk = ww.hyperbolic_simulator(T=200, N=500, dt=0.01)
 
 on_sphere.shape, in_disk.shape                        # ((200, 500, 3), (200, 500, 2))
 ```
@@ -78,24 +87,28 @@ on_sphere.shape, in_disk.shape                        # ((200, 500, 3), (200, 50
 The manifold classes can also be driven directly, one step at a time:
 
 ```python
-from wanderwalk import Sphere, Torus, PoincareDisk
-
-sphere = Sphere()
+sphere = ww.Sphere()
 point = np.array([1.0, 0.0, 0.0])
 for _ in range(100):
     point = sphere.euler_maruyama_step(point, dt=0.01)   # stays on the sphere
 
-disk = PoincareDisk()
+disk = ww.PoincareDisk()
 disk.geodesic_distance_from_origin(np.array([0.6, 0.0]))  # hyperbolic distance
 ```
 
 And the density estimators turn final positions into a heatmap:
 
 ```python
-from wanderwalk import sphere_kde, disk_kde, boundary_angle_histogram
+density = ww.disk_kde(in_disk[-1], x_mesh, y_mesh, N=500)
+counts, edges = ww.boundary_angle_histogram(in_disk[-1], radius_threshold=0.9)
+```
 
-density = disk_kde(in_disk[-1], x_mesh, y_mesh, N=500)
-counts, edges = boundary_angle_histogram(in_disk[-1], radius_threshold=0.9)
+One module sits outside the alias. `wanderwalk.heat_kernel` needs SciPy, which
+the numpy-only core install does not pull in, so it is not re-exported at the
+top level and `ww.heat_kernel` will not resolve. Import it by path:
+
+```python
+from wanderwalk.heat_kernel import estimate_heat_kernel
 ```
 
 ## Project Layout

@@ -60,15 +60,25 @@ notebooks = [
     "plotly>=5.0",
     "scipy>=1.7",
 ]
+# Building the documentation site with mkdocs build / mkdocs serve
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.26",
+    "pymdown-extensions>=10",
+]
+# SciPy is needed by tests/test_heat_kernel.py, which skips without it
 test = [
     "pytest>=7.0",
+    "scipy>=1.7",
 ]
 
 [project.scripts]
 wanderwalk-app = "wanderwalk.app.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/jeanjacquesstleroux/wanderwalk"
+Homepage = "https://jeanjacquesstleroux.github.io/wanderwalk/"
+Documentation = "https://jeanjacquesstleroux.github.io/wanderwalk/"
 Repository = "https://github.com/jeanjacquesstleroux/wanderwalk"
 Issues = "https://github.com/jeanjacquesstleroux/wanderwalk/issues"
 Changelog = "https://github.com/jeanjacquesstleroux/wanderwalk/blob/main/CHANGELOG.md"
@@ -87,7 +97,13 @@ include = [
     "/CHANGELOG.md",
     "/LICENSE",
     "/README.md",
+    "/mkdocs.yml",
     "/pyproject.toml",
+]
+exclude = [
+    # Full-resolution logo sources. docs/assets/ carries the web-sized
+    # versions the site actually references.
+    "/docs/logos",
 ]
 
 [tool.pytest.ini_options]

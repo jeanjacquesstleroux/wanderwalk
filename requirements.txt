@@ -11,4 +11,4 @@
 #     pip install wanderwalk           # core library, numpy only
 #     pip install wanderwalk[app]      # plus the Streamlit app
 
--e .[app,notebooks,test]
+-e .[app,docs,notebooks,test]

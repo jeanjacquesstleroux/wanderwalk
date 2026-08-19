@@ -1,0 +1,134 @@
+site_name: wanderwalk
+site_description: "Brownian motion on Riemannian 2-manifolds: the sphere, the torus, and the hyperbolic plane"
+site_url: https://jeanjacquesstleroux.github.io/wanderwalk/
+repo_url: https://github.com/jeanjacquesstleroux/wanderwalk
+repo_name: jeanjacquesstleroux/wanderwalk
+edit_uri: edit/main/docs/
+copyright: Released under the MIT License
+
+theme:
+  name: material
+  logo: assets/wanderkitty.png
+  favicon: assets/wanderkitty.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - content.code.copy
+    - content.action.edit
+    - navigation.instant
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            docstring_section_style: table
+            # The codebase carries no type annotations; the docstrings state
+            # shapes in prose instead. Silence only that warning, so --strict
+            # still fails on malformed docstrings.
+            docstring_options:
+              warn_missing_types: false
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: true
+            show_signature_annotations: false
+            separate_signature: true
+            members_order: source
+            heading_level: 2
+            merge_init_into_class: true
+            filters: ["!^_"]
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jeanjacquesstleroux/wanderwalk
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/wanderwalk/
+
+# Full-resolution logo originals and the figure generator are repository
+# sources, not site content. docs/assets/ holds the web-sized versions.
+exclude_docs: |
+  logos/
+  scripts/
+
+# The LaTeX and PDF sources under docs/writeups/ ship as downloads rather
+# than as navigable pages.
+not_in_nav: |
+  /writeups/latex-files/*
+  /writeups/pdf-files/*
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Tutorials:
+      - Brownian motion on the sphere: tutorials/01-sphere.md
+      - Brownian motion on the torus: tutorials/02-torus.md
+      - The hyperbolic plane: tutorials/03-hyperbolic.md
+      - Driving the manifolds directly: tutorials/04-manifolds.md
+      - Density estimation: tutorials/05-density.md
+      - The heat kernel on the sphere: tutorials/06-heat-kernel.md
+  - Guides:
+      - Reproducibility and performance: guides/reproducibility.md
+      - The interactive app: guides/streamlit-app.md
+  - API reference:
+      - Overview: reference/index.md
+      - Manifolds: reference/manifolds.md
+      - Simulation: reference/simulation.md
+      - Visualization: reference/visualization.md
+      - Heat kernel: reference/heat-kernel.md
+  - Background:
+      - Motivation and theory: background.md
+      - Differential geometry curriculum: writeups/1-curriculum-checklist.md
+      - Poincare disk derivation: writeups/2-poincare-disk-derivation.md
+  - Changelog: changelog.md

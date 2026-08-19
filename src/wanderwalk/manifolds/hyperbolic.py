@@ -21,7 +21,7 @@ class PoincareDisk(Manifold):
 
     - The radial process rho_t = 2*artanh(|X_t|) (the geodesic distance
       from the origin) satisfies dRho_t = dBeta_t + (1/2)*coth(rho_t) dt.
-      This closed-form target is the primary check for this manifold 
+      This closed-form target is the primary check for this manifold
       since H^2 has no stationary distribution to compare against.
     """
 
@@ -30,12 +30,12 @@ class PoincareDisk(Manifold):
 
         Arguments:
             epsilon: How far inside the unit circle a point is clamped to
-            if a numerical step pushes it to or past the boundary. 
+                if a numerical step pushes it to or past the boundary.
         """
         self.epsilon = epsilon
 
     def conformal_factor(self, x):
-        '''Computes the conformal factor lambda(x) = 2 / (1 - |x|^2) at a
+        """Computes the conformal factor lambda(x) = 2 / (1 - |x|^2) at a
         point x in the disk. This is the scalar by which the Euclidean
         metric is multiplied to get the hyperbolic metric at x.
 
@@ -44,12 +44,12 @@ class PoincareDisk(Manifold):
 
         Returns:
             The conformal factor lambda(x) at point x.
-        '''
+        """
         norm_sq = np.dot(x, x)
         return 2.0 / (1.0 - norm_sq)
 
     def project_to_tangent(self, x, v):
-        '''Returns v unchanged.
+        """Returns v unchanged.
 
         Unlike Sphere and Torus, which are embedded in R^3 and therefore
         need to remove the ambient normal component of a vector to obtain
@@ -57,8 +57,8 @@ class PoincareDisk(Manifold):
         2-dimensional: the tangent space at every interior point x is all
         of R^2, since there is no ambient subspace to restrict to.
 
-        Note this method only ensures v lies in the correct 2D subspace 
-        (trivially true here), it does not account for the fact that the 
+        Note this method only ensures v lies in the correct 2D subspace
+        (trivially true here), it does not account for the fact that the
         tangent space's inner product is non-Euclidean.
 
         Arguments:
@@ -67,11 +67,11 @@ class PoincareDisk(Manifold):
 
         Returns:
             v, unchanged.
-        '''
+        """
         return v
 
     def project_to_tangent_multiple(self, X, V):
-        '''Vectorized version of project_to_tangent for many points/vectors
+        """Vectorized version of project_to_tangent for many points/vectors
         at once. Returns V unchanged, for every tangent space here is all of R^2.
 
         Arguments:
@@ -80,11 +80,11 @@ class PoincareDisk(Manifold):
 
         Returns:
             V, unchanged.
-        '''
+        """
         return V
 
     def sample_tangent_noise(self, x):
-        '''Generates the tangent noise at point x for the
+        """Generates the tangent noise at point x for the
         Euler-Maruyama step, per the Ito SDE derived in
         docs/writeups/2-poincare-disk-derivation.md section 3:
 
@@ -100,12 +100,12 @@ class PoincareDisk(Manifold):
 
         Returns:
             A random vector in R^2, scaled for the hyperbolic metric at x.
-        '''
+        """
         z = np.random.randn(2)
         return z / self.conformal_factor(x)
 
     def sample_tangent_noise_multiple(self, X):
-        '''Vectorized version of sample_tangent_noise for many points at
+        """Vectorized version of sample_tangent_noise for many points at
         once.
 
         Arguments:
@@ -113,7 +113,7 @@ class PoincareDisk(Manifold):
 
         Returns:
             An (N, 2) array of random tangent vectors, one per input point.
-        '''
+        """
         N = X.shape[0]
         Z = np.random.randn(N, 2)
         norms_sq = np.sum(X * X, axis=1, keepdims=True)
@@ -121,7 +121,7 @@ class PoincareDisk(Manifold):
         return Z / conformal_factors
 
     def project_to_manifold(self, x):
-        '''Clamps a point x back inside the open unit disk if a numerical
+        """Clamps a point x back inside the open unit disk if a numerical
         step has pushed it to or past the boundary.
 
         The true continuous-time process on H^2 never reaches the
@@ -133,29 +133,29 @@ class PoincareDisk(Manifold):
 
         Arguments:
             x: A point in R^2 that may lie at or beyond the unit circle
-            due to numerical error.
+                due to numerical error.
 
         Returns:
             x, unchanged if |x| < 1 - epsilon; otherwise x rescaled
             radially to have norm exactly 1 - epsilon.
-        '''
+        """
         norm = np.linalg.norm(x)
         if norm >= 1.0 - self.epsilon:
             return x * ((1.0 - self.epsilon) / norm)
         return x
 
     def project_to_manifold_multiple(self, X):
-        '''Vectorized version of project_to_manifold for many points at
+        """Vectorized version of project_to_manifold for many points at
         once.
 
         Arguments:
             X: An (N, 2) array of points in R^2 that may lie at or beyond
-            the unit circle due to numerical error.
+                the unit circle due to numerical error.
 
         Returns:
             An (N, 2) array with any offending points rescaled radially to
             have norm exactly 1 - epsilon.
-        '''
+        """
         norms = np.linalg.norm(X, axis=1, keepdims=True)
         clamped = np.where(
             norms >= 1.0 - self.epsilon,
@@ -165,7 +165,7 @@ class PoincareDisk(Manifold):
         return clamped
 
     def euler_maruyama_step(self, x, dt):
-        '''Simulates one step of Brownian motion from point x to the next
+        """Simulates one step of Brownian motion from point x to the next
         point in the disk. Noise is first generated for point x (already
         scaled for the hyperbolic metric, see sample_tangent_noise) and
         then scaled by the square root of the time step. Then the next
@@ -179,14 +179,14 @@ class PoincareDisk(Manifold):
 
         Returns:
             The next point in the disk.
-        '''
+        """
         noise = self.sample_tangent_noise(x)
         noise_scaled = np.sqrt(dt) * noise
         x_updated = x + noise_scaled
         return self.project_to_manifold(x_updated)
 
     def geodesic_distance_from_origin(self, x):
-        '''Computes the hyperbolic (geodesic) distance from the origin to
+        """Computes the hyperbolic (geodesic) distance from the origin to
         point x, using the standard Poincare-disk radial distance formula:
 
             rho(x) = 2 * artanh(|x|) = ln((1 + |x|) / (1 - |x|))
@@ -200,12 +200,12 @@ class PoincareDisk(Manifold):
 
         Returns:
             The geodesic distance from the origin to x.
-        '''
+        """
         r = np.linalg.norm(x)
         return np.log((1.0 + r) / (1.0 - r))
 
     def geodesic_distance_from_origin_multiple(self, X):
-        '''Vectorized version of geodesic_distance_from_origin for many
+        """Vectorized version of geodesic_distance_from_origin for many
         points at once.
 
         Arguments:
@@ -213,12 +213,12 @@ class PoincareDisk(Manifold):
 
         Returns:
             An (N,) array of geodesic distances from the origin.
-        '''
+        """
         r = np.linalg.norm(X, axis=1)
         return np.log((1.0 + r) / (1.0 - r))
 
     def geodesic_distance(self, z, w):
-        '''Computes the hyperbolic (geodesic) distance between two points z
+        """Computes the hyperbolic (geodesic) distance between two points z
         and w in the disk, using the standard closed-form Poincare-disk
         distance formula:
 
@@ -230,7 +230,7 @@ class PoincareDisk(Manifold):
 
         Returns:
             The geodesic distance between z and w.
-        '''
+        """
         diff_norm_sq = np.dot(z - w, z - w)
         z_norm_sq = np.dot(z, z)
         w_norm_sq = np.dot(w, w)
@@ -238,7 +238,7 @@ class PoincareDisk(Manifold):
         return np.arccosh(argument)
 
     def geodesic_distance_multiple(self, Z, w):
-        '''Vectorized version of geodesic_distance: computes the distance
+        """Vectorized version of geodesic_distance: computes the distance
         from every point in Z to a single point w.
 
         Arguments:
@@ -247,7 +247,7 @@ class PoincareDisk(Manifold):
 
         Returns:
             An (N,) array of geodesic distances from each point in Z to w.
-        '''
+        """
         diff = Z - w
         diff_norm_sq = np.sum(diff * diff, axis=1)
         z_norm_sq = np.sum(Z * Z, axis=1)

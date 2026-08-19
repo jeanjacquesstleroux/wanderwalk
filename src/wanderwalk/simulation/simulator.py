@@ -7,6 +7,10 @@ both the time evolution and the terminal distribution can be inspected.
 Reproducibility: these simulators draw from NumPy's global random state via
 ``np.random``. Call ``np.random.seed(...)`` before a simulator to obtain a
 repeatable trajectory.
+
+All three are re-exported at the top level, so under the conventional alias
+they are reached as ``ww.sphere_simulator``, ``ww.torus_simulator``, and
+``ww.hyperbolic_simulator``.
 """
 
 import numpy as np

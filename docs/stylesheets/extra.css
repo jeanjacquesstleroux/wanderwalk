@@ -1,0 +1,23 @@
+/* The hero logo keeps its white ground, since the cat is solid black and
+   would disappear against the slate background in dark mode. Rounding it
+   makes that deliberate rather than accidental. */
+.ww-hero {
+  display: block;
+  margin: 0 auto 1.5rem;
+  max-width: 320px;
+  width: 100%;
+  border-radius: 1rem;
+  background: #ffffff;
+}
+
+/* The header logo is a transparent cutout, so give it a little room. */
+.md-header__button.md-logo img {
+  height: 1.6rem;
+  width: auto;
+}
+
+/* Wide equations from the writeups scroll rather than overflow the page. */
+.arithmatex > * {
+  overflow-x: auto;
+  overflow-y: hidden;
+}

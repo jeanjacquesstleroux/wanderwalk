@@ -19,9 +19,7 @@ If a particle wanders randomly on the surface of a sphere, constrained always to
 Brownian motion on curved spaces is the foundation of the mathematics underlying:
 
 - Modern generative AI. Diffusion models, the technology behind image generators, are reverse-time diffusion processes, and understanding why they work requires the same mathematics used to study diffusion on manifolds.
-
 - Geometric analysis. The heat equation on a Riemannian manifold, whose solutions are the probability densities of Brownian motion, encodes information about the manifold's shape. Spectral geometers study the manifold by studying how heat spreads across it.
-
 - Statistical physics. Diffusion processes model how particles, energy, and information propagate through physical systems with complex geometries.
 
 This project is a laboratory for exploring these principles, culminating with interactive visualizations that let you watch the diffusion process unfold in real time.
@@ -63,12 +61,10 @@ In $d$ dimensions each coordinate is an independent copy, so the expected square
 A few properties of Brownian motion in flat space are worth noting as they guide the intuition later:
 
 - Brownian paths are continuous but they are nowhere differentiable.
-
 - Where the particle goes next depends only on where it is now, not on how it got there.
-
 - (*Connection to the heat equation*) If you release a cloud of particles at a single point and let them all diffuse independently, their probability density at a later time satisfies the heat equation. Brownian motion is, in this sense, a probabilistic model of heat flow.
 
-**In symbols.** Write $p(t, x)$ for the probability density of the particle's position at time $t$. It obeys the heat equation
+Write $p(t, x)$ for the probability density of the particle's position at time $t$. It obeys the heat equation
 
 $$
 \frac{\partial p}{\partial t} = \frac{1}{2}\,\Delta p, \qquad \Delta p = \sum_{i=1}^d \frac{\partial^2 p}{\partial x_i^2},
@@ -95,10 +91,8 @@ A manifold is a space that looks flat when you zoom in close enough, even if it 
 The manifolds that appear in this project are:
 
 - The sphere, S². The set of all points in three-dimensional space at distance exactly 1 from the origin. This is merely the surface of a ball, not the entire ball itself. It is a two-dimensional surface embedded in three-dimensional space. Its geometry is positively curved everywhere.
-
 - The torus, T². The surface of a donut shape. Topologically, it's equivalent to a square with opposite edges identified -- wrap the left edge around to meet the right edge, then the top to meet the bottom (try it with a napkin!). Unlike the sphere, the torus has zero average curvature (it is locally flat almost everywhere), however its global topology is still non-trivial.
-
-- The hyperbolic plane, H². A surface of constant negative curvature that cannot be embedded in three-dimensional space without distortion. It is represented in this project using the Poincaré disk, which is a unit disk in the plane where distances near the boundary are much larger than they appear. 
+- The hyperbolic plane, H². A surface of constant negative curvature that cannot be embedded in three-dimensional space without distortion. It is represented in this project using the Poincaré disk, which is a unit disk in the plane where distances near the boundary are much larger than they appear.
 
 **In symbols.** Each surface is a set of points together with a rule for measuring the length of a small step.
 
@@ -138,7 +132,7 @@ functions evolve over time) is half the Laplace-Beltrami operator of the manifol
 
 The Laplace-Beltrami operator is the manifold's version of the ordinary Laplacian (the sum of second derivatives). On a flat plane, the Laplacian of a function at a point measures how much the function's value at that point differs from its average over a small disk around the point. The Laplace-Beltrami operator does the same thing, but using the intrinsic geometry of the manifold. On the sphere, this operator has a well-known spectrum -- its eigenfunctions are the spherical harmonics -- and this spectrum encodes information about the sphere in the same way that, say, the frequencies of a drum encode information about the drum's shape.
 
-**In symbols.** On the flat plane the Laplacian is the sum of second derivatives,
+On the flat plane the Laplacian is the sum of second derivatives,
 
 $$
 \Delta f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}.
@@ -158,7 +152,7 @@ $$
 
 The heat kernel, written p(t, x, y), describes the probability density of finding a Brownian particle at location y at time t, given that it started at location x at time zero. It satisfies the heat equation with respect to the Laplace-Beltrami operator in both the x and y variables. On a flat plane, the heat kernel is the Gaussian distribution with variance t. On the sphere, it is an infinite series involving spherical harmonics, but its qualitative behavior is easy to describe: at short times, it models the flat Gaussian, while at long times, it spreads out and converges to the uniform distribution on the sphere (meaning the particle is equally likely to be anywhere).
 
-**In symbols.** The heat kernel is the solution that starts as a point source,
+The heat kernel is the solution that starts as a point source,
 
 $$
 \frac{\partial}{\partial t} p(t, x, y) = \frac{1}{2}\Delta_{g, y}\, p(t, x, y), \qquad p(0, x, y) = \delta_x(y),
@@ -174,9 +168,9 @@ The $\lambda_0 = 0$ term has a constant eigenfunction and is exactly the uniform
 
 ### Stochastic Differential Equations on Manifolds
 
-A stochastic differential equation (SDE) describes how a random process evolves over infinitesimally small time steps. In flat space, Brownian motion satisfies the simplest possible SDE, meaning the change in position over a small time interval is a small Gaussian random variable. On a manifold, we need to specify that each small random step lives in the tangent space at the current point. The particle can only move along the surface, not through it or away from it.
+A stochastic differential equation (SDE) describes how a random process evolves over infinitesimally small time steps. In flat space, Brownian motion satisfies the simplest possible SDE, meaning the change in position over a small time interval is a small Gaussian random variable. On a manifold, we must specify that each small random step lives in the tangent space at the current point. The particle can only move along the surface, not through it or away from it.
 
-**In symbols.** In flat space Brownian motion solves the simplest SDE,
+In flat space Brownian motion solves the simplest SDE,
 
 $$
 dX_t = dW_t,
@@ -198,7 +192,7 @@ The first equation says a random tangent step must be stretched to match the man
 
 Stochastic integrals can be defined in two ways, the Itô convention and the Stratonovich convention. In flat space the difference is minor. On a manifold, though, the Itô convention produces correction terms (called Itô-Stratonovich corrections) dependent on how you specify local coordinates. This means that an Itô SDE written in one coordinate system looks different from the same process written in another coordinate system, which can be a problem if you want to define something that lives on the manifold instead of a coordinate chart. The Stratonovich convention transforms calculus under coordinate changes and thus defines a coordinate-free object. For this reason, Brownian motion on a Riemannian manifold is most naturally expressed as a Stratonovich SDE and hence is the formulation used in this project.
 
-**In symbols.** The two conventions differ by a correction term. Writing $\sigma \circ dW$ for the Stratonovich integral and $\sigma\, dW$ for the Itô integral,
+The two conventions differ by a correction term. Writing $\sigma \circ dW$ for the Stratonovich integral and $\sigma\, dW$ for the Itô integral,
 
 $$
 \sigma^i_{\ k}(X) \circ dW^k = \sigma^i_{\ k}(X)\, dW^k + \frac{1}{2} \sum_{j, k} \sigma^j_{\ k}\, \frac{\partial \sigma^i_{\ k}}{\partial x^j}\, dt.
@@ -211,14 +205,12 @@ The extra $dt$ piece is the Itô-Stratonovich correction. It is built from the c
 We use a technique called the projection method. The idea has three steps:
 
 1. Propose a step. Generate a small random vector in the ambient space (ordinary three-dimensional Euclidean space) that lies in the tangent plane at the current point. For the sphere, this means generating a random (Gaussian) vector and subtracting its component in the radial direction, leaving only the component tangent to the surface.
-
 2. Take the step. Add the tangent vector scaled by the square root of the time step to the current position. This is the Euler-Maruyama update (the discrete-time approximation to the SDE).
-
 3. Project back to the surface. The resulting point will not lie exactly on the manifold (it will be slightly off the surface due to curvature). Project it back. For the sphere, this is normalization: divide the new point by its Euclidean norm. For the torus, this is finding the nearest point on the torus surface.
 
-The error introduced in step 3 is the distance we had to travel to return to the surface. It is proportional to the square of the step size. Since we are taking steps of size proportional to the square root of the time increment, this error is proportional to the time increment itself, which is the same order of error as the Euler-Maruyama approximation. 
+The error introduced in step 3 is the distance we had to travel to return to the surface. It is proportional to the square of the step size. Since we are taking steps of size proportional to the square root of the time increment, this error is proportional to the time increment itself, which is the same order of error as the Euler-Maruyama approximation.
 
-**Step by step.** Write $\Delta t$ for the time step, $Z \sim \mathcal{N}(0, I)$ for a standard Gaussian vector in the ambient space, $P_x$ for the projection onto the tangent space at $x$, and $\Pi_M$ for the projection back onto the surface. One Euler-Maruyama step is
+Write $\Delta t$ for the time step, $Z \sim \mathcal{N}(0, I)$ for a standard Gaussian vector in the ambient space, $P_x$ for the projection onto the tangent space at $x$, and $\Pi_M$ for the projection back onto the surface. One Euler-Maruyama step is
 
 $$
 X_{n+1} = \Pi_M\!\big(X_n + \sqrt{\Delta t}\; P_{X_n} Z\big).
@@ -252,9 +244,9 @@ the same order as the Euler-Maruyama error itself. Shrinking $\Delta t$ shrinks 
 
 ### The Heat Kernel
 
-A particularly compelling visualization in this project comes from empirically estimating the heat kernel. The procedure is the following: fix a starting point x on the manifold (say, the north pole of the sphere). Run a large number of independent simulated paths all starting at x. At several fixed times t, record the positions of all particles. Estimate the probability density of those positions using kernel density estimation. This empirical density is an approximation to the heat kernel p(t, x, ·). The visualization shows the density spreading from the starting point, thinning as it expands, and eventually reflecting off the "back" of the sphere and filling it uniformly. On the torus, the density wraps around the edges and interferes with itself. On the hyperbolic plane, it spreads and concentrates toward the boundary without ever returning. 
+A particularly compelling visualization in this project comes from empirically estimating the heat kernel. The procedure is the following: fix a starting point x on the manifold (say, the north pole of the sphere). Run a large number of independent simulated paths all starting at x. At several fixed times t, record the positions of all particles. Estimate the probability density of those positions using kernel density estimation. This empirical density is an approximation to the heat kernel p(t, x, ·). The visualization shows the density spreading from the starting point, thinning as it expands, and eventually reflecting off the "back" of the sphere and filling it uniformly. On the torus, the density wraps around the edges and interferes with itself. On the hyperbolic plane, it spreads and concentrates toward the boundary without ever returning.
 
-**In symbols.** With $N$ simulated particles ending at positions $y_1, \dots, y_N$, the kernel density estimate of the heat kernel at a point $y$ is an average of bumps centered at each particle,
+With $N$ simulated particles ending at positions $y_1, \dots, y_N$, the kernel density estimate of the heat kernel at a point $y$ is an average of bumps centered at each particle,
 
 $$
 \hat{p}(t, x, y) = \frac{1}{N} \sum_{i=1}^N K_h\big(d(y, y_i)\big),
@@ -270,27 +262,11 @@ where $d(\cdot, \cdot)$ is distance measured along the surface and $K_h$ is a bu
 
 The sphere is the natural first surface because its geometry is familiar and its curvature is uniform; every point on the sphere looks like every other point. The behavior of Brownian motion on the sphere is thus well-understood. It is recurrent (the particle returns arbitrarily close to its starting point infinitely often), and the heat kernel converges to the uniform distribution at a rate governed by the first nontrivial eigenvalue of the Laplace-Beltrami operator.
 
-The sphere also provides the clearest opportunity for validation: the exact heat kernel on the
-
-sphere is known, expressed as a series involving Legendre polynomials. Comparing the empirical
-
-density from simulation to the exact formula at several times gives a concrete accuracy check.
+The sphere also provides the clearest opportunity for validation: the exact heat kernel on the sphere is known, expressed as a series involving Legendre polynomials.
 
 ### The Torus
 
-The torus introduces a new geometric feature: it is flat (its Gaussian curvature is zero almost
-
-everywhere), but its global topology is non-trivial. Brownian motion on a flat torus behaves
-
-locally exactly like Brownian motion on a flat plane — but the torus wraps around, so the
-
-particle cannot escape. The invariant distribution is again uniform. The heat kernel on the
-
-torus has a particularly elegant form — it is a sum of flat Gaussians placed at the images of
-
-the starting point under the torus's translation symmetry — which connects the simulation
-
-directly to the theory of theta functions and Fourier analysis on groups.
+The torus introduces a new geometric feature: it is flat (its Gaussian curvature is zero almost everywhere), but its global topology is non-trivial. Brownian motion on a flat torus behaves locally exactly like Brownian motion on a flat plane, but the torus wraps around, so the particle cannot escape. The invariant distribution is again uniform. The heat kernel on the orus has a particularly elegant form — it is a sum of flat Gaussians placed at the images of the starting point under the torus's translation symmetry — which connects the simulatiodirectly to the theory of theta functions and Fourier analysis on groups.
 
 The torus is also computationally instructive because periodic boundary conditions are a staple technique in physics simulations. Implementing them correctly requires careful modular arithmetic.
 
@@ -300,7 +276,7 @@ The hyperbolic plane is the most striking surface in the project. Its constant n
 
 Unlike the sphere and torus, where the particle cloud eventually fills the space uniformly, the cloud on the hyperbolic plane concentrates toward the boundary circle and never equilibrates.
 
-**In symbols.** In the Poincaré disk the distance from the center out to Euclidean radius $r$ (with $0 \le r < 1$) is not $r$ but
+In the Poincaré disk the distance from the center out to Euclidean radius $r$ (with $0 \le r < 1$) is not $r$ but
 
 $$
 \rho = 2\,\operatorname{artanh}(r) = \ln\!\left(\frac{1 + r}{1 - r}\right),
@@ -322,41 +298,23 @@ The project is organized as a Python library with a testable structure. The mani
 
 ### Performance
 
-The inner loop of a stochastic simulation -- stepping thousands of particles forward one time increment at a time -- is intensive if written naively in Python. The solution to this vectorization. Instead of iterating over particles one by one, we represent all particle positions as one NumPy array and perform operations simultaneously. NumPy's array operations compile to optimized machine code and can be thousands of times faster than an equivalent Python loop. 
+The inner loop of a stochastic simulation -- stepping thousands of particles forward one time increment at a time -- is intensive if written naively in Python. The solution to this vectorization. Instead of iterating over particles one by one, we represent all particle positions as one NumPy array and perform operations simultaneously. NumPy's array operations compile to optimized machine code and can be thousands of times faster than an equivalent Python loop.
 
 ### The App
 
 The Streamlit application provides:
 
 - A surface selector (sphere, torus, or hyperbolic plane).
-
 - A time slider that advances the simulation and re-renders the particle distribution.
-
 - A temperature or diffusivity parameter that controls the step size.
-
 - A starting-point selector for the heat kernel visualization.
-
 - An animated mode that renders the diffusion so the viewer can watch the process occur in real time.
 
 The goal of making an app is to make the mathematics tangible. A viewer who hasn't heard of a Laplace-Beltrami operator can nevertheless gain an accurate intuition for what diffusion on curved space means.
 
 ---
 
-## 6. Deliverables
-
-- A Python library with implementations of Brownian motion on the sphere and torus, a vectorized Euler-Maruyama simulator, and an empirical heat kernel estimator, all with full docstrings, unit tests, and a one-command setup.
-
-- Jupyter notebooks exported to HTML for easy viewing without running any code. Each notebook is designed to be readable as a document.
-
-- A Streamlit application with a live animated visualization of the diffusion process unfolding step by step across the selected surface, a heat kernel panel, and interactive controls for all simulation parameters.
-
-- Technical blog posts written accessibly for a reader with one year of college mathematics, with the key visualizations embedded inline. These cover mathematical foundations, the geometry of each surface, the Stratonovich SDE formulation, the projection method with error analysis, the Laplace-Beltrami operator, and the heat kernel. Find the blog posts here [link inserted when done]
-
-- A LinkedIn post, presentation, and demo of the Streamlit application showing the diffusion process in real time. Find Danielle and JJ's links here [link inserted when done]
-
----
-
-## 7. Broader Significance
+## 6. Broader Significance
 
 The project also positions naturally as a computational foundation for future work. A follow-on project could study diffusion processes with drift (stochastic gradient flows on a manifold), or the spectral geometry of the Laplace-Beltrami operator, or the connection to sampling algorithms in high-dimensional statistics.
 
@@ -364,7 +322,7 @@ The project also positions naturally as a computational foundation for future wo
 
 A diffusion model (DDPM, score-based generative model) defines a forward process that gradually adds Gaussian noise to data until the data distribution becomes a standard Gaussian, and then learns to reverse this process. The forward process is a stochastic differential equation, specifically an Ornstein-Uhlenbeck process, and the reversal of that process is Anderson's time-reversal theorem for diffusions, a result in stochastic analysis. The score function the neural network learns to approximate is the logarithmic derivative of the heat kernel with respect to the spatial variable. Every concept in this project -- the heat kernel, the generator, the forward SDE -- appears  in the theory of score-based generative models. Understanding the geometry of diffusion processes significantly helps one understand why these models work.
 
-**In symbols.** The forward process that adds noise is an Ornstein-Uhlenbeck SDE,
+The forward process that adds noise is an Ornstein-Uhlenbeck SDE,
 
 $$
 dX_t = -\theta X_t\, dt + \sigma\, dW_t,
@@ -388,7 +346,7 @@ the gradient of the log density, which is the same log-derivative of the heat ke
 
 Geometric Brownian motion, the standard model for asset prices in quantitative finance, is the simplest stochastic differential equation in flat space. The mathematical tools developed in this project, including Stratonovich calculus, the diffusion generator, and numerical SDE integration, are just generalized versions of the same tools. A student who has built an SDE simulator on a Riemannian manifold has, implicitly, built and understood the majority of what is needed to work with stochastic volatility models, interest rate models, and the numerical methods used to price exotics.
 
-**Step by step.** Geometric Brownian motion models an asset price $S_t$ with the SDE
+Geometric Brownian motion models an asset price $S_t$ with the SDE
 
 $$
 dS_t = \mu S_t\, dt + \sigma S_t\, dW_t,

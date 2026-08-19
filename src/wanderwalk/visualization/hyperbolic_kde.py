@@ -5,7 +5,7 @@ import math
 # and the empirical distribution of their angular position near the boundary.
 
 def disk_kde(final_positions, x_mesh, y_mesh, k=None, N=None):
-    '''Computes a kernel density estimate of particle positions on the
+    """Computes a kernel density estimate of particle positions on the
     Poincare disk, using the exact hyperbolic geodesic distance as the
     kernel argument (the direct analogue of sphere_kde's use of the
     ambient dot product, which is a geodesic-invariant closeness measure
@@ -13,26 +13,26 @@ def disk_kde(final_positions, x_mesh, y_mesh, k=None, N=None):
 
     Since H^2 has no invariant/stationary density to compare against (BM
     on H^2 is transient, see docs/writeups/2-poincare-disk-derivation.md),
-    this is purely a particle visualization, the same role sphere_kde plays 
+    this is purely a particle visualization, the same role sphere_kde plays
     for the sphere.
 
     Arguments:
         final_positions: An (N, 2) array of particle positions in the disk.
         x_mesh: A 2D array of x-coordinates of mesh points (only points
-        strictly inside the unit disk are meaningful; others are masked
-        out with NaN in the returned density).
+            strictly inside the unit disk are meaningful; others are masked
+            out with NaN in the returned density).
         y_mesh: A 2D array of y-coordinates of mesh points, same shape as
-        x_mesh.
+            x_mesh.
         k: Concentration parameter for the kernel exp(-k * d(x_i, y)^2).
-        Larger k concentrates each particle's contribution more tightly
-        around itself. Defaults to sqrt(N) if N is given, else 20 (same
-        default convention as sphere_kde).
+            Larger k concentrates each particle's contribution more tightly
+            around itself. Defaults to sqrt(N) if N is given, else 20 (same
+            default convention as sphere_kde).
         N: Number of particles, used only to pick a default k.
 
     Returns:
         A 2D array (same shape as x_mesh) of normalized density values,
         with NaN at mesh points outside the open unit disk.
-    '''
+    """
     if k is None:
         k = math.sqrt(N) if N else 20
 
@@ -65,7 +65,7 @@ def disk_kde(final_positions, x_mesh, y_mesh, k=None, N=None):
 
 
 def boundary_angle_histogram(final_positions, radius_threshold=0.9, bins=36):
-    '''Computes a histogram of the angular position (theta = atan2(y, x)) of
+    """Computes a histogram of the angular position (theta = atan2(y, x)) of
     particles that have travelled beyond a given Euclidean radius
     threshold. Since paths converge almost surely to a random point on the
     boundary circle (the Poisson boundary), and the hyperbolic metric is
@@ -77,14 +77,14 @@ def boundary_angle_histogram(final_positions, radius_threshold=0.9, bins=36):
     Arguments:
         final_positions: An (N, 2) array of particle positions in the disk.
         radius_threshold: Only particles with Euclidean norm at least this
-        value are included, so the histogram reflects particles that have
-        travelled meaningfully close to the boundary.
+            value are included, so the histogram reflects particles that
+            have travelled meaningfully close to the boundary.
         bins: Number of angular bins over [0, 2*pi).
 
     Returns:
         A tuple (histogram, bin_edges) as returned by np.histogram, or
         (None, None) if no particles meet the radius threshold.
-    '''
+    """
     radii = np.linalg.norm(final_positions, axis=1)
     near_boundary = final_positions[radii >= radius_threshold]
 
